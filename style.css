@@ -15,7 +15,7 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     color: #e0e0e0;
-    background-color: #0a0a0f;
+    background-color: var(--bg-primary);
 }
 
 a {
@@ -34,19 +34,19 @@ img {
 
 /* Color Palette (CSS Variables) */
 :root {
-    --bg-primary: #0b0e14;
-    --bg-secondary: #151a23;
-    --bg-card: #1c2331;
+    --blue-dark: #0f172a;
+    --blue-main: #3b82f6;
+    --blue-light: #60a5fa;
+
+    --bg-primary: #020617;
+    --bg-secondary: #0f172a;
+    --bg-card: #1e293b;
 
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
 
-    --accent-blue: #3b82f6;
-    --accent-blue-hover: #2563eb;
-    --accent-emergency: #f59e0b;
-    --accent-emergency-hover: #d97706;
-
-    --storm-indigo: #312e81;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
 }
 
 /* Navigation Bar */
@@ -56,7 +56,7 @@ nav {
     align-items: center;
     padding: 1rem 3rem;
     background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--storm-indigo);
+    border-bottom: 1px solid var(--blue-dark);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -65,13 +65,13 @@ nav {
 .nav-logo a {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--text-primary);
+    color: var(--blue-main);
     letter-spacing: 2px;
     text-transform: uppercase;
 }
 
 .nav-logo a span {
-    color: var(--accent-blue);
+    color: var(--blue-light);
 }
 
 .nav-links {
@@ -88,8 +88,8 @@ nav {
 }
 
 .nav-links a:hover {
-    color: var(--text-primary);
-    border-bottom-color: var(--accent-blue);
+    color: var(--blue-light);
+    border-bottom-color: var(--blue-main);
 }
 
 /* Hero Section */
@@ -100,8 +100,24 @@ nav {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--storm-indigo) 100%);
+    background: linear-gradient(135deg, var(--bg-primary), #0c152a, #111827, #1e3a8a, var(--bg-primary));
+    background-size: 400% 400%;
+    animation: moveGradient 10s ease infinite;
     padding: 2rem;
+}
+
+@keyframes moveGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .hero-content {
@@ -112,7 +128,7 @@ nav {
     font-size: 4rem;
     margin-bottom: 1rem;
     color: var(--text-primary);
-    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
 }
 
 .hero p {
@@ -137,22 +153,22 @@ nav {
 }
 
 .btn-primary {
-    background-color: var(--accent-emergency);
-    color: var(--bg-primary);
+    background-color: var(--accent);
+    color: white;
     border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 .btn-primary:hover {
-    background-color: var(--accent-emergency-hover);
+    background-color: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
 }
 
 .btn-secondary {
     background-color: transparent;
     color: var(--text-primary);
-    border: 2px solid var(--accent-blue);
+    border: 2px solid var(--blue-main);
 }
 
 .btn-secondary:hover {
