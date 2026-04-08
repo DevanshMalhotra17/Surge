@@ -2,34 +2,592 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surge | Before a Flood</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Surge — Before the Flood</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
 
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="nav-logo">
-            <a href="index.html">Surge<span>.</span></a>
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Scroll progress bar -->
+    <div class="scroll-bar" id="scrollBar"></div>
+
+    <!-- Background -->
+    <div class="bg-water">
+        <!-- Wave SVGs -->
+        <div class="wave-lines">
+            <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="200">
+                <path
+                    d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1380,100 1440,80 L1440,200 L0,200 Z"
+                    fill="rgba(14,77,146,0.12)" />
+                <path
+                    d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1320,75 1400,110 1440,100 L1440,200 L0,200 Z"
+                    fill="rgba(26,111,191,0.08)" style="animation-delay:-3s" />
+            </svg>
         </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="before.html">Before</a></li>
-            <li><a href="during.html">During</a></li>
-            <li><a href="after.html">After</a></li>
-            <li><a href="detect.html">Detect</a></li>
-        </ul>
-    </nav>
+        <!-- Particles -->
+        <div class="particles" id="particles"></div>
+    </div>
+    <div class="grain"></div>
 
-    <!-- Page Content Placeholder -->
-    <main style="padding: 4rem 3rem; text-align: center;">
-        <h1 style="color: var(--blue-main); font-size: 3rem;">Before a Flood</h1>
-        <p style="color: var(--text-secondary); margin-top: 1rem;">Setup phase: How to prepare and protect yourself.</p>
-    </main>
+    <!-- Page -->
+    <div class="page">
 
+        <nav>
+            <div class="nav-logo">
+                <a href="index.html"
+                    style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px;">
+                    <img src="logo.png" alt="Surge Logo" style="height: 32px; width: auto;" />
+                    Surge
+                </a>
+            </div>
+            <div class="nav-tabs">
+                <a href="index.html" class="nav-tab">Home</a>
+                <a href="before.html" class="nav-tab active">Before</a>
+                <a href="during.html" class="nav-tab">During</a>
+                <a href="after.html" class="nav-tab">After</a>
+                <a href="detect.html" class="nav-tab">Detect</a>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-eyebrow">Flood Preparedness Guide</div>
+            <h1 class="hero-title">
+                <span class="outline">Prepare</span>
+                <span class="accent">Before</span>
+                <span>The Water</span>
+                <span>Rises.</span>
+            </h1>
+            <p class="hero-subtitle">
+                The most critical decisions happen long before floodwaters arrive.
+                Build your emergency plan, stock your supplies, and know your zone before it's too late.
+            </p>
+            <div class="hero-cta">
+                <button class="btn-primary"
+                    onclick="document.getElementById('checklist').scrollIntoView({behavior:'smooth'})">Start Your
+                    Checklist</button>
+                <button class="btn-ghost"
+                    onclick="document.getElementById('plan').scrollIntoView({behavior:'smooth'})">Build Emergency
+                    Plan</button>
+            </div>
+
+            <div class="alert-ribbon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                <span><strong>Flood season active</strong> — Average preparation time is 48 hours. Most households are
+                    underprepared. Start today.</span>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Readiness Meter + Checklist -->
+        <section class="meter-section" id="checklist">
+            <div class="section-label">Step 01 — Self Assessment</div>
+            <h2 class="section-title reveal">Your Readiness Score</h2>
+            <p class="section-desc reveal reveal-delay-1">Check off what you've already done to see how prepared you
+                actually are.</p>
+
+            <div class="meter-grid">
+                <div class="meter-visual">
+                    <div class="meter-ring">
+                        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="meterGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#0e4d92" />
+                                    <stop offset="100%" style="stop-color:#5eb8ff" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="track" cx="60" cy="60" r="110"
+                                style="stroke-dasharray:691;stroke-dashoffset:0;display:none" />
+                            <circle class="track" cx="60" cy="60" r="50" />
+                            <circle class="fill" cx="60" cy="60" r="50" id="meterArc" />
+                        </svg>
+                        <div class="meter-center">
+                            <div class="meter-pct" id="meterPct">0%</div>
+                            <div class="meter-label">Prepared</div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="check-list" id="checkList">
+                    <li class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-text">
+                            <strong>Emergency Supply Kit</strong>
+                            <span>72-hour kit with water, food, and essentials stored at home</span>
+                        </div>
+                    </li>
+                    <li class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-text">
+                            <strong>Know Your Flood Zone</strong>
+                            <span>Looked up <a href="https://www.fema.gov/flood-maps" style="color:white;">FEMA flood
+                                    map</a> for your
+                                address</span>
+                        </div>
+                    </li>
+                    <li class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-text">
+                            <strong>Evacuation Route Planned</strong>
+                            <span>Two routes mapped and shared with family members</span>
+                        </div>
+                    </li>
+                    <li class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-text">
+                            <strong>Emergency Contacts List</strong>
+                            <span>Family, neighbors, shelter, and local authority numbers saved</span>
+                        </div>
+                    </li>
+                    <li class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-text">
+                            <strong>Flood Insurance Active</strong>
+                            <span>Policy in place; standard homeowner's doesn't cover floods</span>
+                        </div>
+                    </li>
+                    <li class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-text">
+                            <strong>Important Documents Secured</strong>
+                            <span>IDs, insurance, deeds in waterproof bag or digital backup</span>
+                        </div>
+                    </li>
+                    <li class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-text">
+                            <strong>Signed Up for Weather Alerts</strong>
+                            <span>NWS or local emergency alerts on your phone</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Supply Kit -->
+        <section id="supplies">
+            <div class="section-label">Step 02 — Emergency Supplies</div>
+            <h2 class="section-title reveal">Build Your Go-Bag</h2>
+            <p class="section-desc reveal reveal-delay-1">Every household needs a 72-hour emergency kit ready to grab at
+                a moment's notice.</p>
+
+            <div class="kit-grid">
+                <div class="kit-card reveal">
+                    <div class="kit-qty">1 gal/day</div>
+                    <span class="kit-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"></path></svg>
+                    </span>
+                    <div class="kit-name">Drinking Water</div>
+                    <div class="kit-detail">3 gallons per person minimum. Store in sealed containers away from sunlight.</div>
+                </div>
+                <div class="kit-card reveal reveal-delay-1">
+                    <div class="kit-qty">3+ days</div>
+                    <span class="kit-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14h12M6 8h12M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"></path></svg>
+                    </span>
+                    <div class="kit-name">Non-Perishable Food</div>
+                    <div class="kit-detail">Canned goods, energy bars, dried fruit. Include a manual can opener.</div>
+                </div>
+                <div class="kit-card reveal reveal-delay-2">
+                    <div class="kit-qty">Full supply</div>
+                    <span class="kit-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"></path><path d="M12 12v4"></path><path d="M10 14h4"></path></svg>
+                    </span>
+                    <div class="kit-name">Medications & First Aid</div>
+                    <div class="kit-detail">7-day prescription supply, bandages, antiseptic, pain relievers, nitrile gloves.</div>
+                </div>
+                <div class="kit-card reveal reveal-delay-3">
+                    <div class="kit-qty">2+ sets</div>
+                    <span class="kit-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6L8 15h4l-2 3M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg>
+                    </span>
+                    <div class="kit-name">Flashlight & Batteries</div>
+                    <div class="kit-detail">LED flashlight with extra batteries or hand-crank option. No flames near floodwater.</div>
+                </div>
+                <div class="kit-card reveal">
+                    <div class="kit-qty">Emergency</div>
+                    <span class="kit-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 0 1 10-10 10 10 0 0 1 10 10v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8z"></path><circle cx="12" cy="12" r="2"></circle><path d="M4 12v6"></path><path d="M20 12v6"></path></svg>
+                    </span>
+                    <div class="kit-name">NOAA Weather Radio</div>
+                    <div class="kit-detail">Battery or hand-crank radio for alerts when cell towers fail.</div>
+                </div>
+                <div class="kit-card reveal reveal-delay-1">
+                    <div class="kit-qty">Waterproof</div>
+                    <span class="kit-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </span>
+                    <div class="kit-name">Document Copies</div>
+                    <div class="kit-detail">Passport, birth certificate, insurance, property deed in sealed bag or USB.</div>
+                </div>
+                <div class="kit-card reveal reveal-delay-2">
+                    <div class="kit-qty">Per person</div>
+                    <span class="kit-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
+                    </span>
+                    <div class="kit-name">Sturdy Footwear & Clothes</div>
+                    <div class="kit-detail">Waterproof boots, warm layers. Floodwater carries contaminants — protect skin.</div>
+                </div>
+                <div class="kit-card reveal reveal-delay-3">
+                    <div class="kit-qty">Charged</div>
+                    <span class="kit-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"></rect><line x1="22" y1="11" x2="22" y2="13"></line><line x1="6" y1="11" x2="6" y2="13"></line><line x1="10" y1="11" x2="10" y2="13"></line><line x1="14" y1="11" x2="14" y2="13"></line></svg>
+                    </span>
+                    <div class="kit-name">Portable Power Bank</div>
+                    <div class="kit-detail">10,000+ mAh. Keep charged. Used for phones, hearing aids, small devices.</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Risk Zones -->
+        <section id="zones">
+            <div class="section-label">Step 03 — Know Your Risk</div>
+            <h2 class="section-title reveal">Understand Your Flood Zone</h2>
+            <p class="section-desc reveal reveal-delay-1">FEMA designates flood zones based on probability. Your zone
+                determines your urgency level and insurance requirements.</p>
+
+            <div class="zone-grid">
+                <div class="zone-card high reveal">
+                    <div class="zone-badge">High Risk — Zone A/AE</div>
+                    <div class="zone-title">Special Flood Hazard Area</div>
+                    <div class="zone-desc">1% annual chance of flooding (100-year floodplain). Federal flood insurance
+                        is mandatory if you have a federally backed mortgage.</div>
+                    <ul class="zone-actions">
+                        <li>Purchase flood insurance immediately</li>
+                        <li>Elevate utilities above base flood level</li>
+                        <li>Install flood vents or barriers</li>
+                        <li>Know your evacuation route by heart</li>
+                        <li>Keep go-bag at front door during season</li>
+                    </ul>
+                </div>
+                <div class="zone-card medium reveal reveal-delay-1">
+                    <div class="zone-badge">Moderate Risk — Zone B/X</div>
+                    <div class="zone-title">500-Year Flood Zone</div>
+                    <div class="zone-desc">0.2% annual chance of flooding. Insurance not required but strongly
+                        recommended. One-third of flood claims come from these zones.</div>
+                    <ul class="zone-actions">
+                        <li>Consider affordable preferred risk policy</li>
+                        <li>Keep drains and gutters clear</li>
+                        <li>Waterproof your basement</li>
+                        <li>Store valuables on upper floors</li>
+                        <li>Sign up for community alerts</li>
+                    </ul>
+                </div>
+                <div class="zone-card low reveal reveal-delay-2">
+                    <div class="zone-badge">Lower Risk — Zone C/X</div>
+                    <div class="zone-title">Minimal Flood Hazard</div>
+                    <div class="zone-desc">Outside mapped flood plains. Still not zero risk — extreme weather events can
+                        flood anywhere. Basic preparedness is still essential.</div>
+                    <ul class="zone-actions">
+                        <li>Build a standard 72-hour go-bag</li>
+                        <li>Know the nearest shelter location</li>
+                        <li>Check your homeowner's policy limits</li>
+                        <li>Keep important documents accessible</li>
+                        <li>Stay weather-alert aware</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Emergency Plan Builder -->
+        <section class="plan-section" id="plan">
+            <div class="section-label">Step 04 — Your Emergency Plan</div>
+            <h2 class="section-title reveal">Build a Family Plan</h2>
+            <p class="section-desc reveal reveal-delay-1">A plan that exists only in your head isn't a plan. Fill this
+                out, print it, and share with every household member.</p>
+
+            <div class="plan-grid">
+                <div class="plan-steps reveal">
+                    <div class="plan-step">
+                        <div class="step-num">01</div>
+                        <div class="step-content">
+                            <strong>Identify Your Meeting Point</strong>
+                            <p>Choose two locations — one near your home, one farther away. Make sure everyone knows
+                                both addresses without needing their phone.</p>
+                        </div>
+                    </div>
+                    <div class="plan-step">
+                        <div class="step-num">02</div>
+                        <div class="step-content">
+                            <strong>Assign Roles</strong>
+                            <p>Who grabs the go-bag? Who calls the out-of-town contact? Who is responsible for pets?
+                                Assign every role before the emergency, not during it.</p>
+                        </div>
+                    </div>
+                    <div class="plan-step">
+                        <div class="step-num">03</div>
+                        <div class="step-content">
+                            <strong>Map Two Exit Routes</strong>
+                            <p>Plan primary and alternate routes from your home. Floodwater can block roads instantly.
+                                Drive both routes before you need them.</p>
+                        </div>
+                    </div>
+                    <div class="plan-step">
+                        <div class="step-num">04</div>
+                        <div class="step-content">
+                            <strong>Designate an Out-of-Area Contact</strong>
+                            <p>Local lines get overwhelmed. A contact 100+ miles away can relay messages between family
+                                members when local communication fails.</p>
+                        </div>
+                    </div>
+                    <div class="plan-step">
+                        <div class="step-num">05</div>
+                        <div class="step-content">
+                            <strong>Practice & Review Annually</strong>
+                            <p>Run a 15-minute drill once a year. Update the plan when family members, addresses, or
+                                phone numbers change.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-form reveal reveal-delay-2">
+                    <div class="form-group">
+                        <label class="form-label">Household Name / Address</label>
+                        <input type="text" class="form-input" placeholder="123 Main St, Springfield..." />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Flood Zone</label>
+                            <select class="form-select">
+                                <option value="">Select zone</option>
+                                <option>Zone A — High Risk</option>
+                                <option>Zone AE — High Risk</option>
+                                <option>Zone X — Moderate</option>
+                                <option>Zone C — Lower Risk</option>
+                                <option>I Don't Know</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Household Size</label>
+                            <select class="form-select">
+                                <option>1 person</option>
+                                <option>2 people</option>
+                                <option selected>3–4 people</option>
+                                <option>5+ people</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Primary Meeting Point</label>
+                        <input type="text" class="form-input" placeholder="e.g. Neighbor's house at 45 Oak Ave" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Out-of-Area Emergency Contact</label>
+                        <input type="text" class="form-input" placeholder="Name — phone number" />
+                        <p class="form-note">Someone outside your region who can relay messages</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Primary Evacuation Route</label>
+                        <input type="text" class="form-input"
+                            placeholder="e.g. Main St → Route 9 N → Shelter at Lincoln High" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pets / Special Needs Notes</label>
+                        <input type="text" class="form-input"
+                            placeholder="Dog needs carrier, grandma uses wheelchair..." />
+                    </div>
+                    <button class="btn-primary" style="width:100%; margin-top:8px" onclick="handleSave()">
+                        Save & Download Plan PDF
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom strip -->
+        <div class="strip">
+            <div class="strip-text">
+                <strong>Surge</strong> — Built for the hackathon. Data sourced from FEMA, NOAA, and Red Cross
+                guidelines.
+            </div>
+            <div class="strip-hotline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 12.18 19.79 19.79 0 013.07 3.5 2 2 0 015.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91A16 16 0 0015 15.91l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                </svg>
+                Emergency: <strong>1-800-621-3362</strong>
+            </div>
+        </div>
+
+    </div><!-- /page -->
+
+    <!-- Floating SOS -->
+    <button class="sos-btn" onclick="alert('In a real emergency, call 911 immediately.')">SOS</button>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+        });
+        (function animRing() {
+            rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+            requestAnimationFrame(animRing);
+        })();
+
+        // Scroll bar
+        const bar = document.getElementById('scrollBar');
+        window.addEventListener('scroll', () => {
+            const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+            bar.style.width = pct + '%';
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.12 });
+        reveals.forEach(r => obs.observe(r));
+
+        // Particles
+        const pCont = document.getElementById('particles');
+        for (let i = 0; i < 40; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.cssText = `
+      left:${Math.random() * 100}%;
+      bottom:${Math.random() * 30}%;
+      --dur:${6 + Math.random() * 10}s;
+      --delay:${Math.random() * 8}s;
+      --drift:${(Math.random() - 0.5) * 60}px;
+      width:${1 + Math.random() * 2}px; height:${1 + Math.random() * 2}px;
+    `;
+            pCont.appendChild(p);
+        }
+
+        // Checklist toggle + meter
+        const items = document.querySelectorAll('.check-item');
+        const arc = document.getElementById('meterArc');
+        const pct = document.getElementById('meterPct');
+        const totalLen = 2 * Math.PI * 50; // circumference ~314
+
+        function updateMeter() {
+            const done = document.querySelectorAll('.check-item.done').length;
+            const ratio = done / items.length;
+            const offset = totalLen * (1 - ratio);
+            arc.style.strokeDasharray = totalLen;
+            arc.style.strokeDashoffset = offset;
+            arc.style.animation = 'none';
+            let current = parseInt(pct.textContent);
+            const target = Math.round(ratio * 100);
+            const step = () => {
+                current += current < target ? 1 : -1;
+                pct.textContent = current + '%';
+                if (current !== target) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
+
+        function toggleCheck(el) {
+            el.classList.toggle('done');
+            updateMeter();
+        }
+
+        // Save plan (PDF Download)
+        function handleSave() {
+            const btn = event.target;
+            btn.textContent = 'Generating PDF...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+
+            // Get form values
+            const inputs = document.querySelectorAll('.form-input');
+            const selects = document.querySelectorAll('.form-select');
+
+            const address = inputs[0].value || 'Not provided';
+            const zone = selects[0].value || 'Not provided';
+            const size = selects[1].value || 'Not provided';
+            const meeting = inputs[1].value || 'Not provided';
+            const contact = inputs[2].value || 'Not provided';
+            const route = inputs[3].value || 'Not provided';
+            const notes = inputs[4].value || 'None';
+
+            // Create printable HTML
+            const printContent = `
+                <div style="font-family: 'Inter', Helvetica, Arial, sans-serif; padding: 40px; color: #111; background: #fff; max-width: 800px; margin: 0 auto;">
+                    <div style="border-bottom: 3px solid #1a6fbf; padding-bottom: 16px; margin-bottom: 32px;">
+                        <h1 style="color: #0d2240; font-size: 28px; margin: 0;">Surge Household Emergency Plan</h1>
+                        <p style="color: #666; margin: 8px 0 0 0; font-size: 14px;">Keep this document printed and easily accessible.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="color: #1a6fbf; font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">Household Details</h3>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Primary Address/Name:</strong> ${address}</p>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Known Flood Zone:</strong> ${zone}</p>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Household Size:</strong> ${size}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="color: #1a6fbf; font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">Evacuation & Meeting</h3>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Primary Meeting Point:</strong> ${meeting}</p>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Evacuation Route:</strong> ${route}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="color: #1a6fbf; font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">Contacts & Notes</h3>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Out-of-Area Contact:</strong> ${contact}</p>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Special / Pets Notes:</strong> ${notes}</p>
+                    </div>
+                    
+                    <div style="margin-top: 60px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 16px; text-align: center;">
+                        Generated securely via Surge | National Emergency Hotline: 1-800-621-3362
+                    </div>
+                </div>
+            `;
+
+            const opt = {
+                margin: 0.5,
+                filename: 'Surge_Emergency_Plan.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, scrollY: 0 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(printContent).save().then(() => {
+                btn.textContent = '✓ Plan Downloaded!';
+                btn.style.background = '#1a6fbf';
+                btn.style.opacity = '1';
+                setTimeout(() => {
+                    btn.textContent = 'Save & Download Plan PDF';
+                    btn.style.background = '';
+                    btn.style.pointerEvents = 'auto';
+                }, 3000);
+            }).catch(err => {
+                console.error("PDF generation error: ", err);
+                btn.textContent = 'Error generating PDF';
+                btn.style.opacity = '1';
+                setTimeout(() => {
+                    btn.textContent = 'Save & Download Plan PDF';
+                    btn.style.pointerEvents = 'auto';
+                }, 3000);
+            });
+        }
+    </script>
 </body>
 
 </html>
