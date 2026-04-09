@@ -2,34 +2,417 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surge | Detect Risk</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Surge Command Center — Active Defense Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Hub Specific Styles */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .app-tile {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .app-tile:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--foam);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(94, 184, 255, 0.1);
+        }
+
+        .app-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--foam), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .app-tile:hover::before {
+            transform: translateX(100%);
+        }
+
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(94, 184, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--foam);
+            transition: all 0.3s;
+        }
+
+        .app-tile:hover .app-icon {
+            background: var(--foam);
+            color: var(--deep);
+            transform: scale(1.1);
+        }
+
+        .app-status {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #2ecc71;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #2ecc71;
+        }
+
+        .status-dot.pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .app-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            color: var(--white);
+            margin: 0;
+        }
+
+        .app-desc {
+            font-size: 0.85rem;
+            color: var(--sky);
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .app-meta {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            color: var(--warning);
+            opacity: 0.7;
+        }
+
+        .hub-header {
+            margin-bottom: 40px;
+        }
+
+        .system-banner {
+            background: rgba(245, 166, 35, 0.05);
+            border: 1px solid rgba(245, 166, 35, 0.2);
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            animation: fadeIn 1s forwards;
+        }
+
+        .banner-icon {
+            color: var(--warning);
+        }
+
+        .banner-text {
+            font-size: 0.85rem;
+            color: var(--sky);
+        }
+
+        .banner-text strong {
+            color: var(--warning);
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="nav-logo">
-            <a href="index.html">Surge<span>.</span></a>
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Scroll progress bar -->
+    <div class="scroll-bar" id="scrollBar"></div>
+
+    <!-- Background -->
+    <div class="bg-water">
+        <div class="wave-lines">
+            <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="200">
+                <path
+                    d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1380,100 1440,80 L1440,200 L0,200 Z"
+                    fill="rgba(14,77,146,0.12)" />
+                <path
+                    d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1320,75 1400,110 1440,100 L1440,200 L0,200 Z"
+                    fill="rgba(26,111,191,0.08)" style="animation-delay:-3s" />
+            </svg>
         </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="before.html">Before</a></li>
-            <li><a href="during.html">During</a></li>
-            <li><a href="after.html">After</a></li>
-            <li><a href="detect.html">Detect</a></li>
-        </ul>
-    </nav>
+        <div class="particles" id="particles"></div>
+    </div>
+    <div class="grain"></div>
 
-    <!-- Page Content Placeholder -->
-    <main style="padding: 4rem 3rem; text-align: center;">
-        <h1 style="color: var(--text-primary); font-size: 3rem;">Flood Risk Detector</h1>
-        <p style="color: var(--text-secondary); margin-top: 1rem;">Interactive Tool.</p>
-    </main>
+    <!-- Page -->
+    <div class="page">
 
+        <nav>
+            <div class="nav-logo">
+                <a href="index.html"
+                    style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px;">
+                    <img src="assets/logo.png" alt="Surge Logo" style="height: 32px; width: auto;" />
+                    Surge
+                </a>
+            </div>
+            <div class="nav-tabs">
+                <a href="index.html" class="nav-tab">Home</a>
+                <a href="before.html" class="nav-tab">Before</a>
+                <a href="during.html" class="nav-tab">During</a>
+                <a href="after.html" class="nav-tab">After</a>
+                <a href="detect.html" class="nav-tab active">Command Center</a>
+            </div>
+        </nav>
+
+        <section class="hub-section">
+            <div class="hub-header">
+                <div class="section-label">Active Monitoring System</div>
+                <h1 class="hero-title">
+                    <span class="outline">Command</span>
+                    <span class="accent">Center</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Centralized modular suite for real-time flood intelligence, safety coordination, and property
+                    security. Select an application to begin.
+                </p>
+            </div>
+
+            <div class="system-banner">
+                <div class="banner-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <div class="banner-text">
+                    <strong>System Status: Nominal</strong> — Connected to NOAA & FEMA real-time data nodes. Artificial
+                    Intelligence assessment active.
+                </div>
+            </div>
+
+            <div class="hub-grid">
+                <!-- App 1: Surge Radar -->
+                <a href="#" class="app-tile reveal">
+                    <div class="app-status">
+                        <div class="status-dot pulse"></div>
+                        Live
+                    </div>
+                    <div class="app-icon">
+                        <img src="assets/radar.png" alt="Radar Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
+                    </div>
+                    <h3 class="app-title">Surge Radar</h3>
+                    <p class="app-desc">High-resolution flood tracking and cloud saturation monitoring. Visualize the
+                        water front in real-time.</p>
+                    <div class="app-meta">Satellite: NOAA-GOES-16</div>
+                </a>
+
+                <!-- App 2: HighGround -->
+                <a href="#" class="app-tile reveal reveal-delay-1">
+                    <div class="app-status">
+                        <div class="status-dot"></div>
+                        Ready
+                    </div>
+                    <div class="app-icon">
+                        <img src="assets/highground.png" alt="HighGround Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
+                    </div>
+                    <h3 class="app-title">HighGround</h3>
+                    <p class="app-desc">Find your way to safety. Topographic pathfinding that avoids low-lying dips and
+                        flood plains.</p>
+                    <div class="app-meta">Topo Data: USGS LIDAR</div>
+                </a>
+
+                <!-- App 3: LifeLine -->
+                <a href="#" class="app-tile reveal reveal-delay-2">
+                    <div class="app-status">
+                        <div class="status-dot pulse"></div>
+                        Live
+                    </div>
+                    <div class="app-icon">
+                        <img src="assets/lifeline.png" alt="LifeLine Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
+                    </div>
+                    <h3 class="app-title">LifeLine</h3>
+                    <p class="app-desc">Low-bandwidth emergency communication hub. Share location and safety status with
+                        limited cell signal.</p>
+                    <div class="app-meta">P2P Mesh Network</div>
+                </a>
+
+                <!-- App 4: The Vault -->
+                <a href="#" class="app-tile reveal">
+                    <div class="app-status">
+                        <div class="status-dot"></div>
+                        Sync
+                    </div>
+                    <div class="app-icon" style="background: radial-gradient(circle at center, rgba(6, 40, 61, 0.8) 0%, rgba(2, 12, 27, 1) 100%); border: 1px solid rgba(94, 184, 255, 0.3); box-shadow: 0 0 15px rgba(94, 184, 255, 0.1);">
+                        <!-- The Vault CSS Icon -->
+                        <div style="position: relative; width: 24px; height: 24px; border: 2px solid var(--foam); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 4px; height: 6px; background: var(--foam); border-radius: 1px;"></div>
+                        </div>
+                    </div>
+                    <h3 class="app-title">The Vault</h3>
+                    <p class="app-desc">Digital emergency locker. Track go-bag supplies, expiration dates, and secure
+                        document backups.</p>
+                    <div class="app-meta">AES-256 Encrypted</div>
+                </a>
+
+                <!-- App 5: FlashBeacon -->
+                <a href="#" class="app-tile reveal reveal-delay-1">
+                    <div class="app-status">
+                        <div class="status-dot" style="background: #e74c3c; box-shadow: 0 0 8px #e74c3c;"></div>
+                        Emergency
+                    </div>
+                    <div class="app-icon" style="background: radial-gradient(circle at center, rgba(64, 28, 28, 0.4) 0%, rgba(2, 12, 27, 1) 100%); border: 1px solid rgba(231, 76, 60, 0.3); box-shadow: 0 0 20px rgba(231, 76, 60, 0.2);">
+                        <!-- FlashBeacon CSS Icon -->
+                        <div style="width: 12px; height: 12px; background: var(--white); border-radius: 50%; box-shadow: 0 0 15px var(--white), 0 0 30px var(--foam);"></div>
+                    </div>
+                    <h3 class="app-title">FlashBeacon</h3>
+                    <p class="app-desc">High-visibility distress signal. Screen stroboscope and high-frequency auditory
+                        rescue whistle.</p>
+                    <div class="app-meta">SAR Integrated</div>
+                </a>
+
+                <!-- App 6: ClaimSync -->
+                <a href="#" class="app-tile reveal reveal-delay-2"
+                    onclick="alert('Module loading: Damage documentation sensor.')">
+                    <div class="app-status">
+                        <div class="status-dot"></div>
+                        Ready
+                    </div>
+                    <div class="app-icon" style="background: radial-gradient(circle at center, rgba(6, 40, 61, 0.8) 0%, rgba(2, 12, 27, 1) 100%); border: 1px solid rgba(94, 184, 255, 0.3);">
+                        <!-- ClaimSync CSS Icon -->
+                        <div style="width: 20px; height: 20px; border: 2px dashed var(--foam); border-radius: 50%; animation: spin 4s linear infinite;"></div>
+                    </div>
+                    <h3 class="app-title">ClaimSync</h3>
+                    <p class="app-desc">Automated damage documentation. Securely log property damage with GPS and
+                        timestamp for insurance.</p>
+                    <div class="app-meta">Blockchain Ledger</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Bottom strip -->
+        <div class="strip">
+            <div class="strip-text">
+                <strong>Surge</strong> — Data sourced from FEMA, NOAA, and Red Cross
+                guidelines.
+            </div>
+            <div class="strip-hotline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M22 16.92v3a2 2 0 01-2.18 2 19.79(19.79 0 01-8.63-3.07A19.5 19.5 0 013 12.18 19.79 19.79 0 013.07 3.5 2 2 0 015.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91A16 16 0 0015 15.91l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                </svg>
+                Emergency: <strong>1-800-621-3362</strong>
+            </div>
+        </div>
+
+    </div><!-- /page -->
+
+    <!-- Floating SOS -->
+    <button class="sos-btn" onclick="alert('In a real emergency, call 911 immediately.')">SOS</button>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+        });
+        (function animRing() {
+            rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+            requestAnimationFrame(animRing);
+        })();
+
+        // Scroll bar
+        const bar = document.getElementById('scrollBar');
+        window.addEventListener('scroll', () => {
+            const sc = document.body.scrollHeight - window.innerHeight;
+            if (sc > 0) {
+                const pct = window.scrollY / sc * 100;
+                bar.style.width = pct + '%';
+            }
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.12 });
+        reveals.forEach(r => obs.observe(r));
+
+        // Particles
+        const pCont = document.getElementById('particles');
+        for (let i = 0; i < 40; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.cssText = `
+                left:${Math.random() * 100}%;
+                bottom:${Math.random() * 30}%;
+                --dur:${6 + Math.random() * 10}s;
+                --delay:${Math.random() * 8}s;
+                --drift:${(Math.random() - 0.5) * 60}px;
+                width:${1 + Math.random() * 2}px; height:${1 + Math.random() * 2}px;
+            `;
+            pCont.appendChild(p);
+        }
+    </script>
 </body>
 
 </html>
