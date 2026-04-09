@@ -371,70 +371,7 @@
     <!-- Floating SOS -->
     <button class="sos-btn" onclick="alert('In a real emergency, call 911 immediately.')">SOS</button>
 
-    <script>
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        const ring = document.getElementById('cursorRing');
-        let mx = 0, my = 0, rx = 0, ry = 0;
-        document.addEventListener('mousemove', e => {
-            mx = e.clientX; my = e.clientY;
-            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-        });
-        (function animRing() {
-            rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
-            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-            requestAnimationFrame(animRing);
-        })();
-
-        // Scroll bar
-        const bar = document.getElementById('scrollBar');
-        window.addEventListener('scroll', () => {
-            const sc = document.body.scrollHeight - window.innerHeight;
-            if (sc > 0) {
-                const pct = window.scrollY / sc * 100;
-                bar.style.width = pct + '%';
-            }
-        });
-
-        // Scroll reveal
-        const reveals = document.querySelectorAll('.reveal');
-        const obs = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.12 });
-        reveals.forEach(r => obs.observe(r));
-
-        // Particles
-        const pCont = document.getElementById('particles');
-        for (let i = 0; i < 40; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.cssText = `
-                left:${Math.random() * 100}%;
-                bottom:${Math.random() * 30}%;
-                --dur:${6 + Math.random() * 10}s;
-                --delay:${Math.random() * 8}s;
-                --drift:${(Math.random() - 0.5) * 60}px;
-                width:${1 + Math.random() * 2}px; height:${1 + Math.random() * 2}px;
-            `;
-            pCont.appendChild(p);
-        }
-
-        // ── Mobile Menu Toggle ──
-        const navToggle = document.getElementById('navToggle');
-        const navTabs = document.getElementById('navTabs');
-
-        navToggle.addEventListener('click', () => {
-            navToggle.classList.toggle('open');
-            navTabs.classList.toggle('open');
-        });
-
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                navToggle.classList.remove('open');
-                navTabs.classList.remove('open');
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
