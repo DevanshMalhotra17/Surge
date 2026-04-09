@@ -1,118 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Surge | During a Flood</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surge — During a Flood</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
-
 <body>
 
-    <!-- Custom cursor -->
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-    <!-- Scroll progress bar -->
-    <div class="scroll-bar" id="scrollBar"></div>
+<!-- Scroll progress bar -->
+<div class="scroll-bar" id="scrollBar"></div>
 
-    <!-- Background -->
-    <div class="bg-water">
-        <div class="wave-lines">
-            <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="200">
-                <path
-                    d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1380,100 1440,80 L1440,200 L0,200 Z"
-                    fill="rgba(14,77,146,0.12)" />
-                <path
-                    d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1320,75 1400,110 1440,100 L1440,200 L0,200 Z"
-                    fill="rgba(26,111,191,0.08)" style="animation-delay:-3s" />
-            </svg>
-        </div>
-        <div class="particles" id="particles"></div>
+<!-- Background -->
+<div class="bg-water">
+  <div class="wave-lines">
+    <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="200">
+      <path d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1380,100 1440,80 L1440,200 L0,200 Z"
+            fill="rgba(14,77,146,0.12)"/>
+      <path d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1320,75 1400,110 1440,100 L1440,200 L0,200 Z"
+            fill="rgba(26,111,191,0.08)"/>
+    </svg>
+  </div>
+  <div class="particles" id="particles"></div>
+</div>
+<div class="grain"></div>
+
+<!-- Page -->
+<div class="page">
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-logo">
+      <div class="drop-icon"></div>
+      <a href="index.html">Surge</a>
     </div>
-    <div class="grain"></div>
+    <div class="nav-toggle" id="navToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="nav-tabs" id="navTabs">
+      <a href="index.html" class="nav-tab">Home</a>
+      <a href="before.html" class="nav-tab">Before</a>
+      <a href="during.html" class="nav-tab active">During</a>
+      <a href="after.html" class="nav-tab">After</a>
+      <a href="detect.html" class="nav-tab">Command Center</a>
+    </div>
+  </nav>
 
-    <!-- Page -->
-    <div class="page">
-
-        <nav>
-            <div class="nav-logo">
-                <a href="index.html"
-                    style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px;">
-                    <img src="assets/logo.png" alt="Surge Logo" style="height: 32px; width: auto;" />
-                    Surge
-                </a>
-            </div>
-            <div class="nav-tabs">
-                <a href="index.html" class="nav-tab">Home</a>
-                <a href="before.html" class="nav-tab">Before</a>
-                <a href="during.html" class="nav-tab active">During</a>
-                <a href="after.html" class="nav-tab">After</a>
-                <a href="detect.html" class="nav-tab">Command Center</a>
-            </div>
-        </nav>
-
-        <!-- Hero Placeholder -->
-        <section class="hero" style="min-height: 80vh;">
-            <div class="hero-eyebrow">Evacuation Phase</div>
-            <h1 class="hero-title">
-                <span class="outline">During</span>
-                <span class="accent">The Flood</span>
-            </h1>
-            <p class="hero-subtitle">
-                Staying safe while the water rises. What to do, where to go, and how to survive.
-            </p>
-        </section>
-
-        <!-- Bottom strip -->
-        <div class="strip" style="position: absolute; bottom: 0; width: 100%;">
-            <div class="strip-text">
-                <strong>Surge</strong> — Data sourced from FEMA, NOAA, and Red Cross
-                guidelines.
-            </div>
-            <div class="strip-hotline">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path
-                        d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 12.18 19.79 19.79 0 013.07 3.5 2 2 0 015.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91A16 16 0 0015 15.91l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-                </svg>
-                Emergency: <strong>1-800-621-3362</strong>
-            </div>
-        </div>
-
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">Flood Response Guide</div>
+    <h1 class="hero-title">
+      <span class="outline">Survive</span>
+      <span class="accent">During</span>
+      <span>The Rising</span>
+      <span>Waters.</span>
+    </h1>
+    <p class="hero-subtitle">
+      When floodwater arrives, every second counts. Know the rules that save lives —
+      what to do, what to avoid, and how to stay alive if you're trapped.
+    </p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('rules').scrollIntoView({behavior:'smooth'})">Safety Rules</button>
+      <button class="btn-ghost" onclick="document.getElementById('depth').scrollIntoView({behavior:'smooth'})">Water Depth Dangers</button>
     </div>
 
-    <!-- Floating SOS -->
-    <button class="sos-btn" onclick="alert('In a real emergency, call 911 immediately.')">SOS</button>
+    <div class="alert-ribbon" style="background: rgba(232, 67, 26, 0.08); border-color: rgba(232, 67, 26, 0.3); color: #ff7a5c; opacity: 1;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span><strong>TURN AROUND, DON'T DROWN</strong> — Never walk, swim, or drive through floodwaters. It is the #1 cause of flood deaths.</span>
+    </div>
+  </section>
 
-    <script>
-        const cursor = document.getElementById('cursor');
-        const ring = document.getElementById('cursorRing');
-        let mx = 0, my = 0, rx = 0, ry = 0;
-        document.addEventListener('mousemove', e => {
-            mx = e.clientX; my = e.clientY;
-            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-        });
-        (function animRing() {
-            rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
-            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-            requestAnimationFrame(animRing);
-        })();
+  <div class="divider"></div>
 
-        const bar = document.getElementById('scrollBar');
-        window.addEventListener('scroll', () => {
-            const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
-            bar.style.width = pct + '%';
-        });
+  <!-- Water Depth Danger -->
+  <section id="depth">
+    <div class="section-label">Critical Knowledge</div>
+    <h2 class="section-title reveal">How Dangerous Is The Water?</h2>
+    <p class="section-desc reveal reveal-delay-1">Floodwater is deceptively powerful. Here's what each depth can do.</p>
 
-        const pCont = document.getElementById('particles');
-        for (let i = 0; i < 40; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.cssText = `
+    <div class="depth-grid">
+      <div class="depth-card reveal" style="border-color: rgba(94, 184, 255, 0.2);">
+        <div class="depth-number" style="color: var(--foam);">6"</div>
+        <div class="depth-unit">Inches of Water</div>
+        <div class="depth-desc">Enough to knock an adult off their feet. Moving water at this depth carries significant force. Never attempt to walk through it.</div>
+      </div>
+      <div class="depth-card reveal reveal-delay-1" style="border-color: rgba(245, 166, 35, 0.25);">
+        <div class="depth-number" style="color: var(--warning);">12"</div>
+        <div class="depth-unit">Inches of Water</div>
+        <div class="depth-desc">Can float most vehicles. Your car becomes a death trap — tires lose traction and the current takes control. Abandon the vehicle.</div>
+      </div>
+      <div class="depth-card reveal reveal-delay-2" style="border-color: rgba(232, 67, 26, 0.3);">
+        <div class="depth-number" style="color: #ff7a5c;">24"</div>
+        <div class="depth-unit">Inches of Water</div>
+        <div class="depth-desc">Can carry away SUVs, trucks, and large vehicles. At this depth, rescue becomes extremely difficult. Evacuate before it reaches this point.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Do's & Don'ts -->
+  <section class="meter-section" id="rules">
+    <div class="section-label">Step 01 — Immediate Actions</div>
+    <h2 class="section-title reveal">Do's & Don'ts</h2>
+    <p class="section-desc reveal reveal-delay-1">Knowing what NOT to do is just as important as knowing what to do.</p>
+
+    <div class="do-dont-grid">
+      <div class="do-column reveal">
+        <div class="col-header" style="color: var(--foam);">
+          <span>✓</span> Do This
+        </div>
+        <div class="do-item">Move immediately to higher ground. Don't wait for official orders if you see rising water.</div>
+        <div class="do-item">Listen to NOAA Weather Radio or local emergency broadcasts for evacuation instructions.</div>
+        <div class="do-item">If ordered to evacuate — leave immediately. Take your go-bag and follow your planned route.</div>
+        <div class="do-item">Turn off utilities (gas, electricity) at the main switches if you have time and it's safe to do so.</div>
+        <div class="do-item">If trapped in a building, move to the highest floor. Signal for help from a window or rooftop.</div>
+      </div>
+      <div class="dont-column reveal reveal-delay-1">
+          <div class="col-header" style="color: #ff7a5c;">
+              <span>✕</span> Never Do This
+          </div>
+          <div class="dont-item">Never walk, swim, or drive through floodwaters. You can't judge the depth or what's beneath.</div>
+          <div class="dont-item">Don't climb into a closed attic — you could become trapped by rising water with no escape.</div>
+          <div class="dont-item">Don't touch downed power lines or electrical equipment in or near floodwater.</div>
+          <div class="dont-item">Don't return to your home until authorities confirm it's safe. There may be structural damage.</div>
+          <div class="dont-item">Don't use generators or grills indoors — carbon monoxide kills silently.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Bottom strip -->
+  <div class="strip">
+    <div class="strip-text">
+      <strong>Surge</strong> — Data sourced from FEMA, NOAA, and Red Cross guidelines.
+    </div>
+    <div class="strip-hotline">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 12.18 19.79 19.79 0 013.07 3.5 2 2 0 015.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91A16 16 0 0015 15.91l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      Emergency: <strong>911</strong>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- Floating SOS -->
+<button class="sos-btn" onclick="alert('In a real emergency, call 911 immediately.')">SOS</button>
+
+<script>
+  // Custom Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  (function animRing() {
+    rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  // Scroll bar
+  const bar = document.getElementById('scrollBar');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = pct + '%';
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Particles
+  const pCont = document.getElementById('particles');
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
       left:${Math.random() * 100}%;
       bottom:${Math.random() * 30}%;
       --dur:${6 + Math.random() * 10}s;
@@ -120,9 +197,24 @@
       --drift:${(Math.random() - 0.5) * 60}px;
       width:${1 + Math.random() * 2}px; height:${1 + Math.random() * 2}px;
     `;
-            pCont.appendChild(p);
-        }
-    </script>
-</body>
+    pCont.appendChild(p);
+  }
 
+  // Mobile Menu Toggle
+  const navToggle = document.getElementById('navToggle');
+  const navTabs = document.getElementById('navTabs');
+
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('open');
+    navTabs.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      navToggle.classList.remove('open');
+      navTabs.classList.remove('open');
+    });
+  });
+</script>
+</body>
 </html>

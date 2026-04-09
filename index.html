@@ -11,6 +11,7 @@
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
 
 <body>
@@ -52,7 +53,12 @@
                     Surge
                 </a>
             </div>
-            <div class="nav-tabs">
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-tabs" id="navTabs">
                 <a href="index.html" class="nav-tab active">Home</a>
                 <a href="before.html" class="nav-tab">Before</a>
                 <a href="during.html" class="nav-tab">During</a>
@@ -220,6 +226,23 @@
     `;
             pCont.appendChild(p);
         }
+
+        // ── Mobile Menu Toggle ──
+        const navToggle = document.getElementById('navToggle');
+        const navTabs = document.getElementById('navTabs');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('open');
+            navTabs.classList.toggle('open');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                navToggle.classList.remove('open');
+                navTabs.classList.remove('open');
+            });
+        });
     </script>
 </body>
 
