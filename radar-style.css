@@ -1,0 +1,423 @@
+/* SURGE RADAR MODULE — Specialized Styles */
+
+.radar-app-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    min-height: 100vh;
+    padding-top: 80px;
+    position: relative;
+    z-index: 5;
+}
+
+@media (max-width: 900px) {
+    .radar-app-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Sidebar */
+.radar-sidebar {
+    background: rgba(7, 17, 31, 0.4);
+    border-right: 1px solid rgba(94, 184, 255, 0.1);
+    padding: 40px 32px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.back-link-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.back-link-inline:hover {
+    color: var(--foam);
+}
+
+/* Search Console */
+.search-box {
+    display: flex;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 4px;
+    margin-top: 20px;
+}
+
+.search-box input {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    padding: 10px 12px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    flex: 1;
+    outline: none;
+}
+
+.search-box button {
+    background: var(--foam);
+    color: var(--deep);
+    border: none;
+    border-radius: 4px;
+    padding: 0 16px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-box button:hover {
+    background: var(--white);
+}
+
+/* Data Cards */
+.active-readouts {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.data-card.tiny {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.data-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 6px;
+}
+
+.data-value {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.95rem;
+    color: var(--foam);
+}
+
+/* Log Panel */
+.log-panel {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    height: 200px;
+    padding: 16px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.log-entry {
+    color: var(--muted);
+    opacity: 0.8;
+}
+
+/* Intel Dashboard Setup */
+.radar-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: radial-gradient(circle at center, rgba(14, 77, 146, 0.05) 0%, transparent 70%);
+}
+
+.intel-dashboard {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(7, 17, 31, 0.6);
+    border: 1px solid rgba(94, 184, 255, 0.15);
+    border-radius: 12px;
+    padding: 32px;
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 16px;
+}
+
+.dashboard-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    margin: 0;
+}
+
+.live-indicator {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    color: #2ecc71;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.1em;
+}
+
+.data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .data-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.intel-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.intel-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(94, 184, 255, 0.2);
+}
+
+.intel-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    opacity: 0.8;
+}
+
+.intel-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+}
+
+.intel-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--foam);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.intel-value.warning {
+    color: var(--warning);
+}
+
+.intel-value.danger {
+    color: var(--danger);
+}
+
+.intel-sub {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.8rem;
+    color: var(--sky);
+}
+
+/* AI Review Panel */
+.ai-review-panel {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 8px;
+}
+
+.ai-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.8rem;
+    color: var(--foam);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.ai-content {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: pre-wrap;
+}
+
+/* The blinking typing cursor */
+.typing-cursor::after {
+    content: '▋';
+    animation: blink 1s step-start infinite;
+    color: var(--foam);
+    margin-left: 4px;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Idle State */
+.idle-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+    opacity: 0.7;
+    animation: pulseIdle 4s infinite;
+}
+
+@keyframes pulseIdle {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.idle-icon {
+    color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 24px;
+}
+
+.idle-state h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin: 0 0 12px 0;
+}
+
+.idle-state p {
+    font-size: 0.9rem;
+    max-width: 300px;
+}
+
+/* Custom Disambiguation Modal */
+.custom-modal {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background: rgba(7, 17, 31, 0.95);
+    border: 1px solid rgba(94, 184, 255, 0.3);
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 450px;
+    width: 90%;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--foam);
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    margin: 0 0 12px 0;
+}
+
+.modal-content p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+.modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.modal-option-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--foam);
+    padding: 12px 16px;
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+}
+
+.modal-option-btn:hover {
+    background: rgba(94, 184, 255, 0.15);
+    border-color: rgba(94, 184, 255, 0.4);
+    transform: translateX(5px);
+}
+
+.modal-cancel {
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+}
+
+.modal-cancel:hover {
+    background: var(--danger);
+    color: var(--white);
+}
