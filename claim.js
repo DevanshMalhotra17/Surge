@@ -14,10 +14,12 @@ function initClaimSync() {
     const cameraViewport = document.getElementById('cameraViewport');
     const canvas = document.getElementById('snapshotCanvas');
     const evidenceGallery = document.getElementById('evidenceGallery');
+    const archivesList = document.getElementById('archivesList');
     const captureBtn = document.getElementById('captureBtn');
 
     let currentCoords = "LAT: --, LON: --";
     let auditData = JSON.parse(localStorage.getItem('surge_claim_evidence')) || []; 
+    let archives = JSON.parse(localStorage.getItem('surge_claim_archives')) || [];
     let videoEl = null;
 
     // Load logs from storage
@@ -150,7 +152,25 @@ function initClaimSync() {
         });
     }
 
-    renderGallery(); // Initial render on load
+    function renderArchives() {
+        if (archives.length === 0) return;
+        archivesList.innerHTML = '';
+        archives.slice().reverse().forEach(session => {
+            const entry = document.createElement('div');
+            entry.style.cssText = "background: rgba(255,255,255,0.05); padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--foam);";
+            entry.innerHTML = `
+                <div>
+                    <div style="font-size: 0.8rem; font-weight: bold; color: var(--foam);">${session.room} / ${session.count} Items</div>
+                    <div style="font-size: 0.6rem; color: var(--muted);">${session.time}</div>
+                </div>
+                <div style="font-family: monospace; font-size: 0.7rem;">ID: ${session.masterId}</div>
+            `;
+            archivesList.appendChild(entry);
+        });
+    }
+
+    renderGallery(); 
+    renderArchives();
 
     captureBtn.addEventListener('click', takeSnapshot);
 
@@ -208,7 +228,19 @@ function initClaimSync() {
 
         html2pdf().set(opt).from(reportRoot).save().then(() => {
             pdfContent.style.display = 'none';
-            addLog("Full Evidence Log Exported.");
+            
+            // Archive this session
+            const sessionRecord = {
+                masterId: `SRG-${Math.floor(Math.random()*9000+1000)}`,
+                time: new Date().toLocaleString(),
+                room: roomSelect.value,
+                count: auditData.length
+            };
+            archives.push(sessionRecord);
+            localStorage.setItem('surge_claim_archives', JSON.stringify(archives));
+            renderArchives();
+
+            addLog("Full Evidence Log Exported and Archived.");
         });
     });
 

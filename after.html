@@ -1,130 +1,1196 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Surge — After a Flood</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="icon" type="image/png" href="assets/logo.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Surge | After a Flood</title>
+    <meta name="description"
+        content="Recovery, safety, and damage documentation steps for returning home after a flood.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#020c1b">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <style>
+        /* ── AFTER PAGE EXTRAS ── */
+
+        .recovery-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(94, 184, 255, 0.08);
+            border: 1px solid rgba(94, 184, 255, 0.25);
+            border-radius: 4px;
+            padding: 6px 14px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            color: var(--foam);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            animation: fadeUp 0.6s 0.2s forwards;
+            opacity: 0;
+        }
+
+        /* PHASE TIMELINE */
+        .phase-timeline {
+            display: flex;
+            gap: 0;
+            margin-top: 48px;
+            position: relative;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 36px;
+            right: 36px;
+            height: 2px;
+            background: linear-gradient(to right, var(--danger), var(--warning), var(--foam));
+            z-index: 0;
+        }
+
+        .phase-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding: 0 12px;
+        }
+
+        .phase-dot {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 14px;
+            border: 2px solid;
+            background: var(--navy);
+            flex-shrink: 0;
+        }
+
+        .phase-step:nth-child(1) .phase-dot {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .phase-step:nth-child(2) .phase-dot {
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .phase-step:nth-child(3) .phase-dot {
+            color: var(--foam);
+            border-color: var(--foam);
+        }
+
+        .phase-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .phase-when {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+        }
+
+        /* HAZARD CARDS */
+        .hazard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .hazard-card {
+            background: rgba(232, 67, 26, 0.04);
+            border: 1px solid rgba(232, 67, 26, 0.12);
+            border-radius: 8px;
+            padding: 24px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .hazard-card:hover {
+            background: rgba(232, 67, 26, 0.08);
+            border-color: rgba(232, 67, 26, 0.25);
+        }
+
+        .hazard-icon {
+            font-size: 1.8rem;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .hazard-card h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .hazard-card p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .hazard-level {
+            display: inline-block;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            padding: 3px 8px;
+            border-radius: 2px;
+            margin-top: 12px;
+            border: 1px solid rgba(232, 67, 26, 0.3);
+            color: var(--danger);
+            background: rgba(232, 67, 26, 0.08);
+        }
+
+        .hazard-level.warn {
+            border-color: rgba(245, 166, 35, 0.3);
+            color: var(--warning);
+            background: rgba(245, 166, 35, 0.06);
+        }
+
+        /* RECOVERY STEPS — step-by-step with icons */
+        .recovery-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 48px;
+        }
+
+        .recovery-step {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 24px;
+            padding: 28px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: start;
+        }
+
+        .recovery-step:last-child {
+            border-bottom: none;
+        }
+
+        .step-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(94, 184, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            color: var(--foam);
+            flex-shrink: 0;
+        }
+
+        .step-body h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 6px;
+        }
+
+        .step-body p {
+            font-size: 0.86rem;
+            color: var(--muted);
+            line-height: 1.65;
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        .step-tip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 0.78rem;
+            color: var(--foam);
+            background: rgba(94, 184, 255, 0.06);
+            border: 1px solid rgba(94, 184, 255, 0.15);
+            border-radius: 4px;
+            padding: 6px 12px;
+        }
+
+        .step-tip::before {
+            content: '💡';
+            font-size: 0.75rem;
+        }
+
+        /* DOCUMENTATION GUIDE */
+        .doc-box {
+            background: rgba(14, 77, 146, 0.08);
+            border: 1px solid rgba(94, 184, 255, 0.12);
+            border-radius: 12px;
+            padding: 36px;
+            margin-top: 48px;
+        }
+
+        .doc-box h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.05em;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .doc-box>p {
+            font-size: 0.88rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .doc-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .doc-item .doc-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .doc-item h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 6px;
+        }
+
+        .doc-item p {
+            font-size: 0.78rem;
+            color: var(--muted);
+            line-height: 1.55;
+            font-weight: 300;
+        }
+
+        /* MOLD TIMELINE */
+        .mold-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 40px;
+            background: rgba(245, 166, 35, 0.04);
+            border: 1px solid rgba(245, 166, 35, 0.12);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .mold-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            align-items: center;
+            gap: 24px;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(245, 166, 35, 0.08);
+        }
+
+        .mold-row:last-child {
+            border-bottom: none;
+        }
+
+        .mold-time {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            color: var(--warning);
+            line-height: 1;
+        }
+
+        .mold-time small {
+            display: block;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+        }
+
+        .mold-desc strong {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--white);
+            margin-bottom: 3px;
+        }
+
+        .mold-desc span {
+            font-size: 0.81rem;
+            color: var(--muted);
+            font-weight: 300;
+        }
+
+        /* RECOVERY CHECKLIST */
+        .recovery-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 40px;
+        }
+
+        .rc-category {
+            margin-bottom: 32px;
+        }
+
+        .rc-cat-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--foam);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rc-cat-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(94, 184, 255, 0.12);
+        }
+
+        .rc-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.2s;
+        }
+
+        .rc-item:last-child {
+            border-bottom: none;
+        }
+
+        .rc-item.done {
+            opacity: 0.45;
+        }
+
+        .rc-item.done .rc-check {
+            background: var(--tide);
+            border-color: var(--tide);
+        }
+
+        .rc-item.done .rc-check::after {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 6px;
+            border-left: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(-45deg) translate(1px, -1px);
+            margin: auto;
+        }
+
+        .rc-check {
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid rgba(94, 184, 255, 0.25);
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .rc-body strong {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--white);
+            margin-bottom: 2px;
+        }
+
+        .rc-body span {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        /* PROGRESS */
+        .recovery-progress-wrap {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            height: 6px;
+            margin-top: 32px;
+            overflow: hidden;
+        }
+
+        .recovery-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--tide), var(--foam));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .recovery-progress-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .recovery-progress-label span:last-child {
+            color: var(--foam);
+        }
+
+        /* FEMA & ASSISTANCE CARDS */
+        .assist-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .assist-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .assist-card:hover {
+            border-color: rgba(94, 184, 255, 0.2);
+        }
+
+        .assist-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .assist-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(94, 184, 255, 0.08);
+            border: 1px solid rgba(94, 184, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .assist-card h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .assist-card p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.6;
+            font-weight: 300;
+            margin-bottom: 14px;
+        }
+
+        .assist-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--foam);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+        }
+
+        .assist-link:hover {
+            text-decoration: underline;
+        }
+
+        .assist-link::after {
+            content: '→';
+        }
+
+        /* Mental health section */
+        .mental-banner {
+            background: linear-gradient(135deg, rgba(14, 77, 146, 0.15), rgba(94, 184, 255, 0.05));
+            border: 1px solid rgba(94, 184, 255, 0.15);
+            border-radius: 12px;
+            padding: 36px;
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .mental-banner h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .mental-banner p {
+            font-size: 0.88rem;
+            color: var(--sky);
+            line-height: 1.65;
+            font-weight: 300;
+        }
+
+        .mental-hotline {
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .mental-hotline .mh-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--foam);
+            letter-spacing: 0.05em;
+            display: block;
+        }
+
+        .mental-hotline small {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+        }
+
+        @media (max-width: 768px) {
+            .phase-timeline::before {
+                display: none;
+            }
+
+            .phase-timeline {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .phase-step {
+                flex-direction: row;
+                align-items: center;
+                text-align: left;
+                gap: 16px;
+            }
+
+            .phase-dot {
+                margin-bottom: 0;
+            }
+
+            .recovery-step {
+                grid-template-columns: 44px 1fr;
+            }
+
+            .mental-banner {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .mental-hotline {
+                text-align: left;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="scroll-bar" id="scrollBar"></div>
 
-<!-- Custom cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- Scroll progress bar -->
-<div class="scroll-bar" id="scrollBar"></div>
-
-<!-- Background -->
-<div class="bg-water">
-  <div class="wave-lines">
-    <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="200">
-      <path d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1380,100 1440,80 L1440,200 L0,200 Z"
-            fill="rgba(14,77,146,0.12)"/>
-      <path d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1320,75 1400,110 1440,100 L1440,200 L0,200 Z"
-            fill="rgba(26,111,191,0.08)"/>
-    </svg>
-  </div>
-  <div class="particles" id="particles"></div>
-</div>
-<div class="grain"></div>
-
-<!-- Page -->
-<div class="page">
-
-  <!-- Nav -->
-  <nav>
-    <div class="nav-logo">
-      <a href="index.html">
-        <img src="assets/logo.png" alt="Surge Logo" />
-        Surge
-      </a>
+    <div class="bg-water">
+        <div class="wave-lines">
+            <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="200">
+                <path
+                    d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1380,100 1440,80 L1440,200 L0,200 Z"
+                    fill="rgba(14,77,146,0.1)" />
+                <path
+                    d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1320,75 1400,110 1440,100 L1440,200 L0,200 Z"
+                    fill="rgba(26,111,191,0.07)" style="animation-delay:-3s" />
+            </svg>
+        </div>
+        <div class="particles" id="particles"></div>
     </div>
-    <div class="nav-toggle" id="navToggle">
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="grain"></div>
+
+    <div class="page">
+        <nav>
+            <div class="nav-logo">
+                <a href="index.html"><img src="assets/logo.png" alt="Surge Logo" /> Surge</a>
+            </div>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+            <div class="nav-tabs" id="navTabs">
+                <a href="index.html" class="nav-tab">Home</a>
+                <a href="before.html" class="nav-tab">Before</a>
+                <a href="during.html" class="nav-tab">During</a>
+                <a href="after.html" class="nav-tab active">After</a>
+                <a href="detect.html" class="nav-tab">Command Center</a>
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="recovery-badge">Recovery & Restoration Phase</div>
+            <h1 class="hero-title">
+                <span class="outline">Rebuild</span>
+                <span class="accent">After</span>
+                <span>The Storm.</span>
+            </h1>
+            <p class="hero-subtitle">
+                The water has receded — but the danger isn't over. Returning home safely,
+                documenting damage, and accessing assistance are your three critical missions.
+            </p>
+            <div class="hero-cta">
+                <button class="btn-primary"
+                    onclick="document.getElementById('reentry').scrollIntoView({behavior:'smooth'})">Safe Re-Entry
+                    Guide</button>
+                <button class="btn-ghost"
+                    onclick="document.getElementById('checklist').scrollIntoView({behavior:'smooth'})">Recovery
+                    Checklist</button>
+            </div>
+
+            <div class="alert-ribbon"
+                style="border-color:rgba(245,166,35,0.35); background:rgba(245,166,35,0.06); color:var(--warning)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="flex-shrink:0">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span>Do not enter your home until <strong>authorities have issued an all-clear</strong> for your
+                    neighborhood. Structural damage and hazards may not be visible.</span>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- RECOVERY PHASES -->
+        <section>
+            <div class="section-label">Overview</div>
+            <h2 class="section-title reveal">Three Phases of Recovery</h2>
+            <p class="section-desc reveal reveal-delay-1">Flood recovery isn't one event — it's a process. Understanding
+                the phases helps you act in the right order.</p>
+
+            <div class="phase-timeline reveal">
+                <div class="phase-step">
+                    <div class="phase-dot">01</div>
+                    <div class="phase-title">Immediate Safety</div>
+                    <div class="phase-when">First 24–72 Hours</div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-dot">02</div>
+                    <div class="phase-title">Document & Claim</div>
+                    <div class="phase-when">Days 1–14</div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-dot">03</div>
+                    <div class="phase-title">Restore & Rebuild</div>
+                    <div class="phase-when">Weeks to Months</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- HIDDEN HAZARDS -->
+        <section>
+            <div class="section-label">01 — Know the Risks</div>
+            <h2 class="section-title reveal">Hidden Hazards After a Flood</h2>
+            <p class="section-desc reveal reveal-delay-1">The flood is gone, but it leaves behind dangers that aren't
+                always visible. Never assume a flooded area is safe.</p>
+
+            <div class="hazard-grid">
+                <div class="hazard-card reveal">
+                    <span class="hazard-icon">⚡</span>
+                    <h4>Electrical Hazards</h4>
+                    <p>Water and soil conduct electricity. Downed power lines may still be energized. Never touch any
+                        electrical equipment before utility crews confirm power is off.</p>
+                    <span class="hazard-level">Lethal Risk</span>
+                </div>
+                <div class="hazard-card reveal reveal-delay-1">
+                    <span class="hazard-icon">🦠</span>
+                    <h4>Contaminated Water</h4>
+                    <p>Floodwater almost always contains raw sewage, industrial chemicals, and pathogens. Any skin
+                        contact requires thorough washing. Never drink tap water until your municipality declares it
+                        safe.</p>
+                    <span class="hazard-level">Lethal Risk</span>
+                </div>
+                <div class="hazard-card reveal reveal-delay-2">
+                    <span class="hazard-icon">🏚️</span>
+                    <h4>Structural Damage</h4>
+                    <p>Flooding weakens foundations, walls, and floors. A structure can appear intact but be on the
+                        verge of collapse. Look for sagging, cracks, or shifted walls before entering.</p>
+                    <span class="hazard-level">Lethal Risk</span>
+                </div>
+                <div class="hazard-card reveal reveal-delay-3">
+                    <span class="hazard-icon">🍄</span>
+                    <h4>Mold & Fungal Growth</h4>
+                    <p>Mold begins growing within 24–48 hours on wet surfaces. Many mold species cause serious
+                        respiratory illness. Wear N95 masks and gloves during any cleaning work.</p>
+                    <span class="hazard-level warn">Serious Risk</span>
+                </div>
+                <div class="hazard-card reveal">
+                    <span class="hazard-icon">🐍</span>
+                    <h4>Wildlife & Pests</h4>
+                    <p>Floods displace snakes, rodents, and insects into unusual locations, including inside your home.
+                        Check dark areas, closets, and debris piles carefully before reaching in.</p>
+                    <span class="hazard-level warn">Serious Risk</span>
+                </div>
+                <div class="hazard-card reveal reveal-delay-1">
+                    <span class="hazard-icon">💨</span>
+                    <h4>Gas Leaks</h4>
+                    <p>Floodwater can displace gas lines and fittings. If you smell gas or hear hissing upon return,
+                        leave immediately and call your gas utility from outside. Do not use switches.</p>
+                    <span class="hazard-level">Lethal Risk</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- SAFE RE-ENTRY STEPS -->
+        <section id="reentry">
+            <div class="section-label">02 — First Walkthrough</div>
+            <h2 class="section-title reveal">Safe Re-Entry Protocol</h2>
+            <p class="section-desc reveal reveal-delay-1">Before you clean a single thing, complete this inspection
+                sequence. Skipping steps can be fatal.</p>
+
+            <div class="recovery-steps">
+                <div class="recovery-step reveal">
+                    <div class="step-circle">01</div>
+                    <div class="step-body">
+                        <h4>Wait for Official Clearance</h4>
+                        <p>Do not return until local emergency management or law enforcement has declared the area safe.
+                            Even if the water looks gone, roads, utilities, and structures may still be compromised.</p>
+                        <span class="step-tip">Check local emergency alerts, FEMA.gov, or your county's emergency
+                            management website for all-clear notices.</span>
+                    </div>
+                </div>
+
+                <div class="recovery-step reveal">
+                    <div class="step-circle">02</div>
+                    <div class="step-body">
+                        <h4>Gear Up Before Entering</h4>
+                        <p>Before you step inside: wear heavy rubber boots, waterproof gloves, goggles, and an N95
+                            respirator mask. Floodwater leaves invisible contaminants on every surface.</p>
+                        <span class="step-tip">Keep a change of clothes in your car — remove and bag your entry clothes
+                            outside before entering a clean environment.</span>
+                    </div>
+                </div>
+
+                <div class="recovery-step reveal">
+                    <div class="step-circle">03</div>
+                    <div class="step-body">
+                        <h4>Inspect the Structure from Outside First</h4>
+                        <p>Walk the perimeter before entering. Look for: foundation cracks, sagging roof lines, shifted
+                            walls, missing sections. If the structure looks compromised at all — do not enter. Contact a
+                            licensed structural engineer.</p>
+                    </div>
+                </div>
+
+                <div class="recovery-step reveal">
+                    <div class="step-circle">04</div>
+                    <div class="step-body">
+                        <h4>Check for Gas Before Opening Doors</h4>
+                        <p>Sniff from outside before opening any door. If you smell gas, do not open anything — call
+                            your gas utility immediately from a safe distance. If no smell, open windows and doors and
+                            wait 5 minutes before entering.</p>
+                    </div>
+                </div>
+
+                <div class="recovery-step reveal">
+                    <div class="step-circle">05</div>
+                    <div class="step-body">
+                        <h4>Document Everything BEFORE Cleaning</h4>
+                        <p>This is critical for insurance and FEMA claims. Take hundreds of photos and videos. Capture
+                            the waterline on walls, damage to floors and furniture, appliances, and the exterior. Do not
+                            move or discard anything until fully documented.</p>
+                        <span class="step-tip">Use a dated timestamp. Cloud-backup your media immediately in case your
+                            phone is lost or damaged.</span>
+                    </div>
+                </div>
+
+                <div class="recovery-step reveal">
+                    <div class="step-circle">06</div>
+                    <div class="step-body">
+                        <h4>Do Not Restore Power Yourself</h4>
+                        <p>Never turn the power back on until a licensed electrician has inspected the electrical
+                            system. Even if breakers were off during the flood, water may have damaged wiring, outlets,
+                            and the panel.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- What to Document -->
+            <div class="doc-box reveal">
+                <h3>Damage Documentation Guide</h3>
+                <p>Comprehensive documentation is the difference between a successful insurance claim and a denied one.
+                    Here's exactly what to capture before touching anything.</p>
+
+                <a href="claim.html"
+                    style="display:inline-flex; align-items:center; gap:12px; margin-bottom:28px; background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.3); border-radius:6px; padding:14px 22px; text-decoration:none; color:var(--white); transition:background 0.2s, border-color 0.2s;"
+                    onmouseover="this.style.background='rgba(46,204,113,0.15)'"
+                    onmouseout="this.style.background='rgba(46,204,113,0.08)'">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2ecc71" stroke-width="2"
+                        style="flex-shrink:0">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                    <div>
+                        <div style="font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:0.08em; color:#2ecc71;">
+                            OPEN CLAIMSYNC →</div>
+                        <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Tamper-proof photo evidence
+                            logger with GPS timestamps — export direct to PDF for your insurer</div>
+                    </div>
+                </a>
+                <div class="doc-grid">
+                    <div class="doc-item">
+                        <span class="doc-icon">📏</span>
+                        <h5>Waterline Height</h5>
+                        <p>Photograph the high-water mark on every wall with a measuring tape for scale.</p>
+                    </div>
+                    <div class="doc-item">
+                        <span class="doc-icon">📦</span>
+                        <h5>All Damaged Items</h5>
+                        <p>Photograph every single damaged item in place before moving it. Include serial numbers where
+                            visible.</p>
+                    </div>
+                    <div class="doc-item">
+                        <span class="doc-icon">🏠</span>
+                        <h5>Structural Damage</h5>
+                        <p>Capture all cracks, warping, buckling floors, damaged walls, and roof damage from multiple
+                            angles.</p>
+                    </div>
+                    <div class="doc-item">
+                        <span class="doc-icon">🔌</span>
+                        <h5>Utilities & Appliances</h5>
+                        <p>Document damage to HVAC, water heater, electrical panel, and all major appliances.</p>
+                    </div>
+                    <div class="doc-item">
+                        <span class="doc-icon">🚗</span>
+                        <h5>Vehicles</h5>
+                        <p>Photograph flood damage to all vehicles. Report to auto insurance separately from home
+                            insurance.</p>
+                    </div>
+                    <div class="doc-item">
+                        <span class="doc-icon">🌿</span>
+                        <h5>Exterior & Yard</h5>
+                        <p>Capture driveway damage, landscaping, fencing, outbuildings, and debris deposits.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- MOLD TIMELINE -->
+        <section>
+            <div class="section-label">03 — Mold Prevention</div>
+            <h2 class="section-title reveal">The Mold Clock is Ticking</h2>
+            <p class="section-desc reveal reveal-delay-1">Mold doesn't wait. Here's what happens if wet materials aren't
+                dried out quickly — and what to do at each stage.</p>
+
+            <div class="mold-timeline reveal">
+                <div class="mold-row">
+                    <div class="mold-time">24–48<small>hours</small></div>
+                    <div class="mold-desc">
+                        <strong>Mold spores begin to colonize</strong>
+                        <span>On wet drywall, wood, carpet, and fabric. Invisible at this stage but actively growing.
+                            Remove standing water and begin drying immediately.</span>
+                    </div>
+                </div>
+                <div class="mold-row">
+                    <div class="mold-time">72<small>hours</small></div>
+                    <div class="mold-desc">
+                        <strong>Visible mold appears</strong>
+                        <span>Fuzzy patches emerge on walls and organic materials. Porous items like carpets,
+                            mattresses, and insulation cannot be saved — discard them.</span>
+                    </div>
+                </div>
+                <div class="mold-row">
+                    <div class="mold-time">1 week<small></small></div>
+                    <div class="mold-desc">
+                        <strong>Structural wood becomes affected</strong>
+                        <span>Mold penetrates framing and subfloor. Professional remediation is now likely required. Do
+                            not bleach — it doesn't reach inside materials.</span>
+                    </div>
+                </div>
+                <div class="mold-row">
+                    <div class="mold-time">Ongoing<small></small></div>
+                    <div class="mold-desc">
+                        <strong>Health impacts escalate</strong>
+                        <span>Chronic exposure to mold causes respiratory illness, particularly for children, elderly,
+                            and those with asthma. Do not occupy a moldy space. Call a certified mold remediation
+                            specialist (IICRC-certified).</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- RECOVERY CHECKLIST -->
+        <section id="checklist">
+            <div class="section-label">04 — Recovery Checklist</div>
+            <h2 class="section-title reveal">Your Full Recovery Checklist</h2>
+            <p class="section-desc reveal reveal-delay-1">Track your progress through recovery. Tap each item as you
+                complete it.</p>
+
+            <div class="recovery-progress-wrap reveal">
+                <div class="recovery-progress-bar" id="recoveryProgressBar"></div>
+            </div>
+            <div class="recovery-progress-label reveal">
+                <span>Steps completed</span>
+                <span id="recoveryProgressText">0 / 15</span>
+            </div>
+
+            <div class="recovery-checklist reveal" id="recoveryChecklist">
+                <div class="rc-category">
+                    <div class="rc-cat-label">Immediate Safety (First 24 hours)</div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Received official all-clear to return home</strong>
+                            <span>Confirmed with local emergency management or law enforcement.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Inspected exterior for structural damage before entering</strong>
+                            <span>No visible foundation cracks, roof sagging, or shifted walls.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Checked for gas leak and confirmed no smell</strong>
+                            <span>Windows opened; waited before fully entering.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Put on protective gear (boots, gloves, N95, goggles)</strong>
+                            <span>Worn for all entry, cleaning, and debris removal.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Electrician inspected panel before restoring power</strong>
+                            <span>Do not restore power without licensed professional sign-off.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rc-category">
+                    <div class="rc-cat-label">Documentation & Claims (Days 1–7)</div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Photographed and video-recorded all damage before cleaning</strong>
+                            <span>All rooms, waterline height, furniture, appliances, exterior.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Notified insurance company and filed initial claim</strong>
+                            <span>Home, flood, and auto insurance contacted separately if applicable.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Applied for FEMA disaster assistance at DisasterAssistance.gov</strong>
+                            <span>Available even with insurance. Keep application reference number.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Kept receipts for all flood-related expenses</strong>
+                            <span>Hotels, food, replacement items, repairs — all may be reimbursable.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rc-category">
+                    <div class="rc-cat-label">Cleanup & Mold Prevention (Days 1–14)</div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Removed all standing water within 24 hours</strong>
+                            <span>Used sump pump, wet-dry vacuum, or professional water extraction.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Discarded all porous items that were submerged</strong>
+                            <span>Carpets, mattresses, insulation, drywall — these cannot be saved.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Deployed fans and dehumidifiers to dry structure</strong>
+                            <span>Target indoor humidity below 60% to prevent mold. Monitor with a humidity
+                                gauge.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Disinfected all non-porous surfaces with appropriate cleaner</strong>
+                            <span>Use EPA-registered disinfectants — not bleach alone, which doesn't penetrate porous
+                                materials.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Tap water confirmed safe before drinking or cooking</strong>
+                            <span>Wait for official municipal clearance. Use bottled or boiled water until then.</span>
+                        </div>
+                    </div>
+                    <div class="rc-item" onclick="toggleRC(this)">
+                        <div class="rc-check"></div>
+                        <div class="rc-body">
+                            <strong>Scheduled licensed mold inspection if flooding was extensive</strong>
+                            <span>IICRC-certified inspector for any structure with water intrusion over 24 hours.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ASSISTANCE & RESOURCES -->
+        <section>
+            <div class="section-label">05 — Get Help</div>
+            <h2 class="section-title reveal">Financial Assistance & Resources</h2>
+            <p class="section-desc reveal reveal-delay-1">You may be entitled to significant financial assistance. These
+                are the programs to apply for immediately.</p>
+
+            <div class="assist-cards">
+                <div class="assist-card reveal">
+                    <div class="assist-header">
+                        <div class="assist-icon">🏛️</div>
+                        <h4>FEMA Disaster Assistance</h4>
+                    </div>
+                    <p>Even if you have insurance, FEMA may cover unmet needs: temporary housing, home repairs, medical
+                        costs, and personal property losses in federally declared disaster areas.</p>
+                    <a href="https://www.disasterassistance.gov" class="assist-link"
+                        target="_blank">DisasterAssistance.gov</a>
+                </div>
+                <div class="assist-card reveal reveal-delay-1">
+                    <div class="assist-header">
+                        <div class="assist-icon">📋</div>
+                        <h4>SBA Disaster Loans</h4>
+                    </div>
+                    <p>Low-interest disaster loans for homeowners, renters, and businesses to repair or replace
+                        property. You don't need to be a business owner to apply — homeowners qualify too.</p>
+                    <a href="https://www.sba.gov/funding-programs/disaster-assistance" class="assist-link"
+                        target="_blank">SBA Disaster Loans</a>
+                </div>
+                <div class="assist-card reveal reveal-delay-2">
+                    <div class="assist-header">
+                        <div class="assist-icon">❤️</div>
+                        <h4>American Red Cross</h4>
+                    </div>
+                    <p>Provides emergency shelter, food, and supplies. Case workers can help connect you to local
+                        recovery resources and offer financial assistance for immediate needs.</p>
+                    <a href="https://www.redcross.org" class="assist-link" target="_blank">RedCross.org</a>
+                </div>
+                <div class="assist-card reveal reveal-delay-3">
+                    <div class="assist-header">
+                        <div class="assist-icon">🏠</div>
+                        <h4>National Flood Insurance</h4>
+                    </div>
+                    <p>If you have an NFIP policy, file your claim immediately. Your insurer has 60 days to pay or deny.
+                        Document everything before moving or discarding any damaged property.</p>
+                    <a href="https://www.floodsmart.gov" class="assist-link" target="_blank">FloodSmart.gov</a>
+                </div>
+            </div>
+
+            <!-- Mental health -->
+            <div class="mental-banner reveal">
+                <div>
+                    <h3>Your Mental Health Matters Too</h3>
+                    <p>Flood recovery is exhausting and emotionally traumatic. Anxiety, depression, and PTSD after
+                        natural disasters are extremely common and nothing to be ashamed of. Reach out to SAMHSA's free
+                        24/7 Disaster Distress Helpline — trained counselors are available now.</p>
+                </div>
+                <div class="mental-hotline">
+                    <span class="mh-num">1-800-985-5990</span>
+                    <small>SAMHSA Disaster Distress Helpline — Free, 24/7</small>
+                </div>
+            </div>
+        </section>
+
+        <footer class="strip">
+            <div class="strip-text"><strong>Surge</strong> — Data sourced from FEMA, NOAA, Red Cross, and CDC flood
+                recovery guidelines.</div>
+            <div class="strip-hotline">Emergency: <strong>1-800-621-3362 or 911</strong></div>
+        </footer>
     </div>
-    <div class="nav-tabs" id="navTabs">
-      <a href="index.html" class="nav-tab">Home</a>
-      <a href="before.html" class="nav-tab">Before</a>
-      <a href="during.html" class="nav-tab">During</a>
-      <a href="after.html" class="nav-tab active">After</a>
-      <a href="detect.html" class="nav-tab">Command Center</a>
-    </div>
-  </nav>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-eyebrow">Flood Recovery Guide</div>
-    <h1 class="hero-title">
-      <span class="outline">Recover</span>
-      <span class="accent">After</span>
-      <span>The Water</span>
-      <span>Recedes.</span>
-    </h1>
-    <p class="hero-subtitle">
-      The danger doesn't end when the water goes down. Contamination, structural damage,
-      and hidden hazards make recovery the most overlooked phase.
-    </p>
-    <div class="hero-cta">
-      <button class="btn-primary" onclick="document.getElementById('timeline').scrollIntoView({behavior:'smooth'})">Recovery Timeline</button>
-      <button class="btn-ghost" onclick="document.getElementById('hazards').scrollIntoView({behavior:'smooth'})">Health Hazards</button>
-    </div>
+    <button class="sos-btn" onclick="openSOSModal()">SOS</button>
+    <script src="script.js"></script>
+    <script>
+        function toggleRC(el) {
+            el.classList.toggle('done');
+            updateRecoveryProgress();
+        }
 
-    <div class="alert-ribbon" style="opacity: 1;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <span><strong>Wait for the all-clear</strong> — Do NOT return home until local authorities confirm it is safe. Hidden dangers persist for days.</span>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Recovery Timeline -->
-  <section id="timeline">
-    <div class="section-label">Step 01 — Recovery Phases</div>
-    <h2 class="section-title reveal">Your Recovery Timeline</h2>
-    <p class="section-desc reveal reveal-delay-1">Recovery is a process, not a single moment. Follow these phases in order.</p>
-
-    <div class="action-grid" style="display: flex; flex-direction: column; gap: 24px;">
-      <div class="action-card reveal" style="max-width: 600px;">
-        <span class="card-tag">First 24 Hours</span>
-        <h3>Official All-Clear</h3>
-        <p>Stay in your shelter. Monitor local news. Do not attempt to return home until authorities explicitly confirm safety.</p>
-      </div>
-      <div class="action-card reveal reveal-delay-1" style="max-width: 600px;">
-        <span class="card-tag">Day 1–3</span>
-        <h3>Initial Home Assessment</h3>
-        <p>Before entering, check for visible structural damage. Look for shifted foundations, cracks, or sagging.</p>
-      </div>
-      <div class="action-card reveal reveal-delay-2" style="max-width: 600px;">
-        <span class="card-tag">Day 3–7</span>
-        <h3>Document & Report</h3>
-        <p>Photograph everything before cleaning. Contact your insurance company immediately. File claims with FEMA.</p>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Bottom strip -->
-  <div class="strip">
-    <div class="strip-text">
-      <strong>Surge</strong> — Data sourced from FEMA, NOAA, and Red Cross guidelines.
-    </div>
-    <div class="strip-hotline">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 12.18 19.79 19.79 0 013.07 3.5 2 2 0 015.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91A16 16 0 0015 15.91l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-      FEMA: <strong>1-800-621-3362</strong>
-    </div>
-  </div>
-
-</div><!-- /page -->
-
-<!-- Floating SOS -->
-<button class="sos-btn" onclick="alert('In a real emergency, call 911 immediately.')">SOS</button>
-
-  <script src="script.js"></script>
+        function updateRecoveryProgress() {
+            const all = document.querySelectorAll('.rc-item');
+            const done = document.querySelectorAll('.rc-item.done').length;
+            const pct = (done / all.length) * 100;
+            document.getElementById('recoveryProgressBar').style.width = pct + '%';
+            document.getElementById('recoveryProgressText').textContent = `${done} / ${all.length}`;
+        }
+    </script>
 </body>
+
 </html>

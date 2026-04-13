@@ -12,6 +12,43 @@
 @media (max-width: 900px) {
     .radar-app-layout {
         grid-template-columns: 1fr;
+        flex-direction: column;
+        padding-top: 80px; /* Space for fixed nav */
+    }
+
+    .radar-sidebar {
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 20px;
+    }
+
+    .radar-main {
+        padding: 20px;
+        min-height: 500px;
+    }
+
+    .active-readouts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .log-panel {
+        grid-column: span 2;
+        max-height: 120px;
+    }
+}
+
+@media (max-width: 600px) {
+    .radar-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .viewport-container {
+        height: 350px;
     }
 }
 

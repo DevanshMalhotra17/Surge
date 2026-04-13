@@ -17,6 +17,44 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
 });
 
+/* --- Emergency SOS Global Logic --- */
+function openSOSModal() {
+    let overlay = document.getElementById('sosModalOverlay');
+    
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'sosModalOverlay';
+        overlay.className = 'sos-modal-overlay';
+        overlay.innerHTML = `
+            <div class="sos-modal">
+                <div class="sos-header">EMERGENCY PROTOCOL</div>
+                <div class="sos-sub">IN A REAL EMERGENCY, CALL 911 IMMEDIATELY.</div>
+                <a href="tel:911" class="sos-call-btn">CALL 911 NOW</a>
+                <button class="sos-dismiss" onclick="closeSOSModal()">DISMISS WARNING</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        
+        // Trigger reflow for animation
+        overlay.offsetHeight;
+    }
+    
+    overlay.classList.add('active');
+}
+
+function closeSOSModal() {
+    const overlay = document.getElementById('sosModalOverlay');
+    if (overlay) overlay.classList.remove('active');
+}
+
+// Global click handler to capture SOS button clicks if they are not using onclick
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('sos-btn')) {
+        e.preventDefault();
+        openSOSModal();
+    }
+});
+
 // ── CUSTOM CURSOR ──
 function initCursor() {
     const cursor = document.getElementById('cursor');

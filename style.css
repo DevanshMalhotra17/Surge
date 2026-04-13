@@ -41,7 +41,7 @@ body {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 100000;
     transform: translate(-50%, -50%);
     transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
 }
@@ -55,7 +55,7 @@ body {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9998;
+    z-index: 99999;
     transform: translate(-50%, -50%);
     transition: transform 0.18s ease, width 0.2s, height 0.2s, opacity 0.2s;
     opacity: 0.5;
@@ -1098,6 +1098,28 @@ section {
         padding-right: 24px;
     }
 
+    /* Responsive Grid */
+    @media (max-width: 1100px) {
+        .hub-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 700px) {
+        .hub-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .hub-header h1 {
+            font-size: 3rem;
+        }
+
+        .app-tile {
+            padding: 24px;
+        }
+    }
+
     .meter-grid,
     .plan-grid {
         grid-template-columns: 1fr;
@@ -1113,4 +1135,96 @@ section {
         gap: 16px;
         text-align: center;
     }
+}
+
+/* --- Emergency SOS Modal --- */
+.sos-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sos-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.sos-modal {
+    background: #1a0a0a;
+    border: 2px solid #ff4d4d;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(255, 77, 77, 0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sos-modal-overlay.active .sos-modal {
+    transform: scale(1);
+}
+
+.sos-header {
+    color: #ff4d4d;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+.sos-sub {
+    font-family: 'Courier Prime', monospace;
+    color: var(--white);
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    opacity: 0.8;
+}
+
+.sos-call-btn {
+    display: block;
+    width: 100%;
+    background: #ff4d4d;
+    color: white !important;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+}
+
+.sos-call-btn:hover {
+    background: #ff3333;
+    transform: translateY(-2px);
+}
+
+.sos-dismiss {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--muted);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+}
+
+.sos-dismiss:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
 }

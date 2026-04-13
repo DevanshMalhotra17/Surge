@@ -64,9 +64,20 @@
 }
 
 @keyframes beaconPulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.15); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .main-trigger h3 {
@@ -166,7 +177,8 @@
     position: fixed;
     inset: 0;
     z-index: 10000;
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     background: #fff;
     cursor: default;
     pointer-events: auto;
@@ -175,7 +187,8 @@
 }
 
 .strobe-overlay.active {
-    display: flex; /* Shown only when active */
+    display: flex;
+    /* Shown only when active */
 }
 
 .stop-strobe-btn {
@@ -191,7 +204,7 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     z-index: 10001;
     transition: transform 0.2s;
 }

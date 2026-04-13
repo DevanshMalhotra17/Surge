@@ -1,162 +1,1199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Surge — During a Flood</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="icon" type="image/png" href="assets/logo.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Surge | During a Flood</title>
+    <meta name="description"
+        content="Immediate life-safety actions for active flooding scenarios. Follow these critical directives now.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#020c1b">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <style>
+        /* ── DURING PAGE EXTRAS ── */
+
+        /* Danger pulse on hero eyebrow */
+        .danger-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(232, 67, 26, 0.15);
+            border: 1px solid rgba(232, 67, 26, 0.5);
+            border-radius: 4px;
+            padding: 6px 14px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            color: var(--danger);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            animation: fadeUp 0.6s 0.2s forwards;
+            opacity: 0;
+        }
+
+        .danger-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: livePulse 1.4s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes livePulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.7);
+            }
+        }
+
+        /* PRIORITY CARDS — numbered crisis steps */
+        .priority-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 48px;
+        }
+
+        .priority-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            align-items: center;
+            gap: 28px;
+            padding: 28px 32px;
+            border-bottom: 1px solid rgba(94, 184, 255, 0.08);
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .priority-item:first-child {
+            border-top: 1px solid rgba(94, 184, 255, 0.08);
+        }
+
+        .priority-item:hover {
+            background: rgba(94, 184, 255, 0.04);
+        }
+
+        .priority-item.danger-row {
+            background: rgba(232, 67, 26, 0.05);
+            border-color: rgba(232, 67, 26, 0.15);
+        }
+
+        .priority-item.danger-row:hover {
+            background: rgba(232, 67, 26, 0.08);
+        }
+
+        .priority-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            line-height: 1;
+            color: rgba(94, 184, 255, 0.12);
+            letter-spacing: 0.02em;
+        }
+
+        .priority-item.danger-row .priority-num {
+            color: rgba(232, 67, 26, 0.2);
+        }
+
+        .priority-body h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 6px;
+        }
+
+        .priority-body p {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.65;
+            font-weight: 300;
+            max-width: 560px;
+        }
+
+        .priority-tag {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 2px;
+            white-space: nowrap;
+            align-self: flex-start;
+        }
+
+        .tag-danger {
+            background: rgba(232, 67, 26, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(232, 67, 26, 0.3);
+        }
+
+        .tag-warning {
+            background: rgba(245, 166, 35, 0.12);
+            color: var(--warning);
+            border: 1px solid rgba(245, 166, 35, 0.3);
+        }
+
+        .tag-info {
+            background: rgba(94, 184, 255, 0.08);
+            color: var(--foam);
+            border: 1px solid rgba(94, 184, 255, 0.25);
+        }
+
+        /* WATER DEPTH GUIDE */
+        .depth-guide {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .depth-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+            padding: 24px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .depth-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(14, 77, 146, 0.25), transparent);
+            animation: waterRise 0.6s ease forwards;
+        }
+
+        .depth-card:nth-child(1)::before {
+            height: 20%;
+            animation-delay: 0.1s;
+        }
+
+        .depth-card:nth-child(2)::before {
+            height: 40%;
+            animation-delay: 0.2s;
+            background: linear-gradient(to top, rgba(245, 166, 35, 0.2), transparent);
+        }
+
+        .depth-card:nth-child(3)::before {
+            height: 60%;
+            animation-delay: 0.3s;
+            background: linear-gradient(to top, rgba(232, 67, 26, 0.2), transparent);
+        }
+
+        .depth-card:nth-child(4)::before {
+            height: 80%;
+            animation-delay: 0.4s;
+            background: linear-gradient(to top, rgba(232, 67, 26, 0.35), transparent);
+        }
+
+        @keyframes waterRise {
+            from {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+
+            to {
+                transform: scaleY(1);
+                transform-origin: bottom;
+            }
+        }
+
+        .depth-depth {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.4rem;
+            line-height: 1;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .depth-card:nth-child(1) .depth-depth {
+            color: var(--foam);
+        }
+
+        .depth-card:nth-child(2) .depth-depth {
+            color: var(--warning);
+        }
+
+        .depth-card:nth-child(3) .depth-depth {
+            color: var(--danger);
+        }
+
+        .depth-card:nth-child(4) .depth-depth {
+            color: var(--danger);
+        }
+
+        .depth-unit {
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .depth-effect {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .depth-desc {
+            font-size: 0.78rem;
+            color: var(--muted);
+            line-height: 1.5;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SURVIVAL TIMER */
+        .timer-block {
+            background: rgba(232, 67, 26, 0.06);
+            border: 1px solid rgba(232, 67, 26, 0.2);
+            border-radius: 8px;
+            padding: 32px;
+            margin-top: 48px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .timer-icon {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--danger);
+            line-height: 1;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .timer-icon small {
+            display: block;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+        }
+
+        .timer-content h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timer-content p {
+            font-size: 0.86rem;
+            color: var(--muted);
+            line-height: 1.65;
+            font-weight: 300;
+        }
+
+        /* INTERACTIVE DECISION TREE */
+        .decision-wrapper {
+            margin-top: 48px;
+        }
+
+        .decision-card {
+            background: rgba(14, 77, 146, 0.1);
+            border: 1px solid rgba(94, 184, 255, 0.15);
+            border-radius: 12px;
+            padding: 32px;
+        }
+
+        .decision-q {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .decision-q .q-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--foam);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .decision-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .decision-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px 20px;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .decision-btn.yes {
+            background: rgba(94, 184, 255, 0.08);
+            border: 1px solid rgba(94, 184, 255, 0.25);
+            color: var(--foam);
+        }
+
+        .decision-btn.yes:hover {
+            background: rgba(94, 184, 255, 0.15);
+            border-color: var(--foam);
+        }
+
+        .decision-btn.no {
+            background: rgba(232, 67, 26, 0.08);
+            border: 1px solid rgba(232, 67, 26, 0.25);
+            color: var(--danger);
+        }
+
+        .decision-btn.no:hover {
+            background: rgba(232, 67, 26, 0.15);
+            border-color: var(--danger);
+        }
+
+        .decision-result {
+            display: none;
+            margin-top: 24px;
+            padding: 20px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .decision-result.safe {
+            background: rgba(94, 184, 255, 0.08);
+            border: 1px solid rgba(94, 184, 255, 0.2);
+            color: var(--sky);
+        }
+
+        .decision-result.unsafe {
+            background: rgba(232, 67, 26, 0.1);
+            border: 1px solid rgba(232, 67, 26, 0.3);
+            color: #ff9980;
+        }
+
+        .decision-result.warning {
+            background: rgba(245, 166, 35, 0.08);
+            border: 1px solid rgba(245, 166, 35, 0.25);
+            color: var(--warning);
+        }
+
+        .decision-result strong {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        .decision-reset {
+            margin-top: 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--muted);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .decision-reset:hover {
+            color: var(--white);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* SIGNAL / RESCUE TACTICS */
+        .signal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .signal-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 24px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .signal-card:hover {
+            background: rgba(94, 184, 255, 0.04);
+            border-color: rgba(94, 184, 255, 0.15);
+        }
+
+        .signal-icon {
+            font-size: 2rem;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .signal-card h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .signal-card p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* LIVE CHECKLIST */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 40px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.2s;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item.done {
+            opacity: 0.5;
+        }
+
+        .task-item.done .task-check {
+            background: var(--tide);
+            border-color: var(--tide);
+        }
+
+        .task-item.done .task-check::after {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 6px;
+            border-left: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(-45deg) translate(1px, -1px);
+            margin: auto;
+        }
+
+        .task-check {
+            width: 22px;
+            height: 22px;
+            border: 1.5px solid rgba(94, 184, 255, 0.3);
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-top: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .task-body strong {
+            display: block;
+            font-size: 0.92rem;
+            color: var(--white);
+            margin-bottom: 3px;
+        }
+
+        .task-body span {
+            font-size: 0.82rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .task-badge {
+            margin-left: auto;
+            flex-shrink: 0;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            padding: 3px 8px;
+            border-radius: 2px;
+            align-self: flex-start;
+            margin-top: 2px;
+        }
+
+        .task-badge.crit {
+            background: rgba(232, 67, 26, 0.12);
+            color: var(--danger);
+            border: 1px solid rgba(232, 67, 26, 0.25);
+        }
+
+        .task-badge.high {
+            background: rgba(245, 166, 35, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(245, 166, 35, 0.2);
+        }
+
+        .task-badge.med {
+            background: rgba(94, 184, 255, 0.08);
+            color: var(--foam);
+            border: 1px solid rgba(94, 184, 255, 0.18);
+        }
+
+        /* PROGRESS BAR */
+        .task-progress-wrap {
+            margin-top: 32px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .task-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--tide), var(--foam));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .task-progress-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-progress-label span:last-child {
+            color: var(--foam);
+        }
+
+        /* STAT CARDS */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-top: 40px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.6rem;
+            line-height: 1;
+            color: var(--foam);
+            margin-bottom: 4px;
+        }
+
+        .stat-val.red {
+            color: var(--danger);
+        }
+
+        .stat-val.amber {
+            color: var(--warning);
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--muted);
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .priority-item {
+                grid-template-columns: 50px 1fr;
+                gap: 16px;
+                padding: 20px 16px;
+            }
+
+            .priority-tag {
+                display: none;
+            }
+
+            .timer-block {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .decision-options {
+                flex-direction: column;
+            }
+
+            .decision-btn {
+                min-width: auto;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="scroll-bar" id="scrollBar"></div>
 
-<!-- Custom cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- Scroll progress bar -->
-<div class="scroll-bar" id="scrollBar"></div>
-
-<!-- Background -->
-<div class="bg-water">
-  <div class="wave-lines">
-    <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="200">
-      <path d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1380,100 1440,80 L1440,200 L0,200 Z"
-            fill="rgba(14,77,146,0.12)"/>
-      <path d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1320,75 1400,110 1440,100 L1440,200 L0,200 Z"
-            fill="rgba(26,111,191,0.08)"/>
-    </svg>
-  </div>
-  <div class="particles" id="particles"></div>
-</div>
-<div class="grain"></div>
-
-<!-- Page -->
-<div class="page">
-
-  <!-- Nav -->
-  <nav>
-    <div class="nav-logo">
-      <a href="index.html">
-        <img src="assets/logo.png" alt="Surge Logo" />
-        Surge
-      </a>
-    </div>
-    <div class="nav-toggle" id="navToggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <div class="nav-tabs" id="navTabs">
-      <a href="index.html" class="nav-tab">Home</a>
-      <a href="before.html" class="nav-tab">Before</a>
-      <a href="during.html" class="nav-tab active">During</a>
-      <a href="after.html" class="nav-tab">After</a>
-      <a href="detect.html" class="nav-tab">Command Center</a>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-eyebrow">Flood Response Guide</div>
-    <h1 class="hero-title">
-      <span class="outline">Survive</span>
-      <span class="accent">During</span>
-      <span>The Rising</span>
-      <span>Waters.</span>
-    </h1>
-    <p class="hero-subtitle">
-      When floodwater arrives, every second counts. Know the rules that save lives —
-      what to do, what to avoid, and how to stay alive if you're trapped.
-    </p>
-    <div class="hero-cta">
-      <button class="btn-primary" onclick="document.getElementById('rules').scrollIntoView({behavior:'smooth'})">Safety Rules</button>
-      <button class="btn-ghost" onclick="document.getElementById('depth').scrollIntoView({behavior:'smooth'})">Water Depth Dangers</button>
-    </div>
-
-    <div class="alert-ribbon" style="background: rgba(232, 67, 26, 0.08); border-color: rgba(232, 67, 26, 0.3); color: #ff7a5c; opacity: 1;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <span><strong>TURN AROUND, DON'T DROWN</strong> — Never walk, swim, or drive through floodwaters. It is the #1 cause of flood deaths.</span>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Water Depth Danger -->
-  <section id="depth">
-    <div class="section-label">Critical Knowledge</div>
-    <h2 class="section-title reveal">How Dangerous Is The Water?</h2>
-    <p class="section-desc reveal reveal-delay-1">Floodwater is deceptively powerful. Here's what each depth can do.</p>
-
-    <div class="depth-grid">
-      <div class="depth-card reveal" style="border-color: rgba(94, 184, 255, 0.2);">
-        <div class="depth-number" style="color: var(--foam);">6"</div>
-        <div class="depth-unit">Inches of Water</div>
-        <div class="depth-desc">Enough to knock an adult off their feet. Moving water at this depth carries significant force. Never attempt to walk through it.</div>
-      </div>
-      <div class="depth-card reveal reveal-delay-1" style="border-color: rgba(245, 166, 35, 0.25);">
-        <div class="depth-number" style="color: var(--warning);">12"</div>
-        <div class="depth-unit">Inches of Water</div>
-        <div class="depth-desc">Can float most vehicles. Your car becomes a death trap — tires lose traction and the current takes control. Abandon the vehicle.</div>
-      </div>
-      <div class="depth-card reveal reveal-delay-2" style="border-color: rgba(232, 67, 26, 0.3);">
-        <div class="depth-number" style="color: #ff7a5c;">24"</div>
-        <div class="depth-unit">Inches of Water</div>
-        <div class="depth-desc">Can carry away SUVs, trucks, and large vehicles. At this depth, rescue becomes extremely difficult. Evacuate before it reaches this point.</div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Do's & Don'ts -->
-  <section class="meter-section" id="rules">
-    <div class="section-label">Step 01 — Immediate Actions</div>
-    <h2 class="section-title reveal">Do's & Don'ts</h2>
-    <p class="section-desc reveal reveal-delay-1">Knowing what NOT to do is just as important as knowing what to do.</p>
-
-    <div class="do-dont-grid">
-      <div class="do-column reveal">
-        <div class="col-header" style="color: var(--foam);">
-          <span>✓</span> Do This
+    <div class="bg-water">
+        <div class="wave-lines">
+            <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="200">
+                <path
+                    d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1380,100 1440,80 L1440,200 L0,200 Z"
+                    fill="rgba(232,67,26,0.06)" />
+                <path
+                    d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1320,75 1400,110 1440,100 L1440,200 L0,200 Z"
+                    fill="rgba(14,77,146,0.1)" style="animation-delay:-3s" />
+            </svg>
         </div>
-        <div class="do-item">Move immediately to higher ground. Don't wait for official orders if you see rising water.</div>
-        <div class="do-item">Listen to NOAA Weather Radio or local emergency broadcasts for evacuation instructions.</div>
-        <div class="do-item">If ordered to evacuate — leave immediately. Take your go-bag and follow your planned route.</div>
-        <div class="do-item">Turn off utilities (gas, electricity) at the main switches if you have time and it's safe to do so.</div>
-        <div class="do-item">If trapped in a building, move to the highest floor. Signal for help from a window or rooftop.</div>
-      </div>
-      <div class="dont-column reveal reveal-delay-1">
-          <div class="col-header" style="color: #ff7a5c;">
-              <span>✕</span> Never Do This
-          </div>
-          <div class="dont-item">Never walk, swim, or drive through floodwaters. You can't judge the depth or what's beneath.</div>
-          <div class="dont-item">Don't climb into a closed attic — you could become trapped by rising water with no escape.</div>
-          <div class="dont-item">Don't touch downed power lines or electrical equipment in or near floodwater.</div>
-          <div class="dont-item">Don't return to your home until authorities confirm it's safe. There may be structural damage.</div>
-          <div class="dont-item">Don't use generators or grills indoors — carbon monoxide kills silently.</div>
-      </div>
+        <div class="particles" id="particles"></div>
     </div>
-  </section>
+    <div class="grain"></div>
 
-  <div class="divider"></div>
+    <div class="page">
+        <nav>
+            <div class="nav-logo">
+                <a href="index.html"><img src="assets/logo.png" alt="Surge Logo" /> Surge</a>
+            </div>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+            <div class="nav-tabs" id="navTabs">
+                <a href="index.html" class="nav-tab">Home</a>
+                <a href="before.html" class="nav-tab">Before</a>
+                <a href="during.html" class="nav-tab active">During</a>
+                <a href="after.html" class="nav-tab">After</a>
+                <a href="detect.html" class="nav-tab">Command Center</a>
+            </div>
+        </nav>
 
-  <!-- Bottom strip -->
-  <div class="strip">
-    <div class="strip-text">
-      <strong>Surge</strong> — Data sourced from FEMA, NOAA, and Red Cross guidelines.
+        <!-- HERO -->
+        <section class="hero">
+            <div class="danger-badge"><span class="dot"></span> Active Response Protocol</div>
+            <h1 class="hero-title">
+                <span class="outline">Survive</span>
+                <span class="accent" style="color:var(--danger)">During</span>
+                <span>The Surge.</span>
+            </h1>
+            <p class="hero-subtitle">
+                The water is here. Seconds count. Follow these life-safety directives in order —
+                prioritize yourself and your family over property.
+            </p>
+            <div class="hero-cta">
+                <button class="btn-primary" style="background:var(--danger); border-color:var(--danger)"
+                    onclick="document.getElementById('immediate').scrollIntoView({behavior:'smooth'})">
+                    ▼ IMMEDIATE ACTIONS
+                </button>
+                <button class="btn-ghost"
+                    onclick="document.getElementById('decision').scrollIntoView({behavior:'smooth'})">Am I
+                    Safe?</button>
+            </div>
+
+            <div class="alert-ribbon"
+                style="border-color:rgba(232,67,26,0.4); background:rgba(232,67,26,0.07); color:var(--danger)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="flex-shrink:0">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                <span>If you are in immediate danger — call <strong>911</strong> right now. Do not wait. Do not read
+                    this page first.</span>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- DANGER STATS -->
+        <section>
+            <div class="section-label">Critical Data</div>
+            <h2 class="section-title reveal">Know the Numbers</h2>
+            <p class="section-desc reveal reveal-delay-1">Flooding is the #1 most deadly weather event in the US — and
+                most deaths are preventable. Know these facts.</p>
+
+            <div class="stat-row">
+                <div class="stat-card reveal">
+                    <div class="stat-val red">6"</div>
+                    <div class="stat-label">of moving water to knock you off your feet</div>
+                </div>
+                <div class="stat-card reveal reveal-delay-1">
+                    <div class="stat-val amber">12"</div>
+                    <div class="stat-label">of water to sweep away a small car</div>
+                </div>
+                <div class="stat-card reveal reveal-delay-2">
+                    <div class="stat-val red">2 ft</div>
+                    <div class="stat-label">of water to carry away most SUVs and trucks</div>
+                </div>
+                <div class="stat-card reveal reveal-delay-3">
+                    <div class="stat-val red">50%</div>
+                    <div class="stat-label">of flood deaths occur inside vehicles</div>
+                </div>
+            </div>
+
+            <!-- Water Depth Guide -->
+            <h3
+                style="font-size:0.85rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--muted); font-family:'Courier Prime',monospace; margin-top:52px; margin-bottom:4px;">
+                Water Depth Danger Scale</h3>
+            <div class="depth-guide">
+                <div class="depth-card reveal">
+                    <div class="depth-depth">6"</div>
+                    <span class="depth-unit">inches</span>
+                    <div class="depth-effect">Knockdown Risk</div>
+                    <div class="depth-desc">Moving water can sweep adults off their feet. Children and elderly are at
+                        risk at even lower levels.</div>
+                </div>
+                <div class="depth-card reveal reveal-delay-1">
+                    <div class="depth-depth">1 ft</div>
+                    <span class="depth-unit">foot</span>
+                    <div class="depth-effect">Car Swept Away</div>
+                    <div class="depth-desc">Standard vehicles lose traction and begin to float. Do not attempt to drive
+                        through.</div>
+                </div>
+                <div class="depth-card reveal reveal-delay-2">
+                    <div class="depth-depth">2 ft</div>
+                    <span class="depth-unit">feet</span>
+                    <div class="depth-effect">SUV / Truck Level</div>
+                    <div class="depth-desc">Even large trucks are carrieed away at this depth. Electrical hazards become
+                        extreme.</div>
+                </div>
+                <div class="depth-card reveal reveal-delay-3">
+                    <div class="depth-depth">3+ ft</div>
+                    <span class="depth-unit">feet</span>
+                    <div class="depth-effect">Structural Danger</div>
+                    <div class="depth-desc">Floodwater this deep exerts enormous pressure on walls and foundations. Move
+                        to highest floor.</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- IMMEDIATE ACTIONS -->
+        <section id="immediate">
+            <div class="section-label">01 — Immediate Actions</div>
+            <h2 class="section-title reveal">Execute in This Order</h2>
+            <p class="section-desc reveal reveal-delay-1">Follow these steps immediately. Priority is non-negotiable —
+                life first, property last.</p>
+
+            <div class="priority-list">
+                <div class="priority-item danger-row reveal">
+                    <div class="priority-num">01</div>
+                    <div class="priority-body">
+                        <h3>Move to High Ground Immediately</h3>
+                        <p>Go to the highest level of your building. If water is rising rapidly, prioritize getting
+                            above flood level above anything else. Only access the roof as an absolute last resort — it
+                            limits your rescue options.</p>
+                    </div>
+                    <span class="priority-tag tag-danger">Critical</span>
+                </div>
+
+                <div class="priority-item danger-row reveal">
+                    <div class="priority-num">02</div>
+                    <div class="priority-body">
+                        <h3>Never Walk or Drive Through Floodwater</h3>
+                        <p>Turn around — don't drown. Six inches of fast-moving water can knock you down. One foot can
+                            sweep your car away. Floodwater may conceal open drains, downed power lines, and road
+                            washouts. There is no safe floodwater.</p>
+                    </div>
+                    <span class="priority-tag tag-danger">Critical</span>
+                </div>
+
+                <div class="priority-item reveal">
+                    <div class="priority-num">03</div>
+                    <div class="priority-body">
+                        <h3>Disconnect Electrical at the Main Breaker</h3>
+                        <p>Only if you can do so without stepping in water. Floodwater conducts electricity. Never touch
+                            any electrical appliance, switch, or outlet while standing in or near water — even a small
+                            current can cause electrocution.</p>
+                    </div>
+                    <span class="priority-tag tag-warning">High Priority</span>
+                </div>
+
+                <div class="priority-item reveal">
+                    <div class="priority-num">04</div>
+                    <div class="priority-body">
+                        <h3>Shut Off Gas at the Meter</h3>
+                        <p>Floodwater can displace gas lines. If you smell gas or hear hissing, leave immediately and do
+                            not operate any switches. Shut off gas at the exterior meter using a wrench — only if safe
+                            to do so.</p>
+                    </div>
+                    <span class="priority-tag tag-warning">High Priority</span>
+                </div>
+
+                <div class="priority-item reveal">
+                    <div class="priority-num">05</div>
+                    <div class="priority-body">
+                        <h3>Signal Your Location to Rescuers</h3>
+                        <p>If trapped, signal from a window or rooftop using a bright cloth, flashlight, or phone light.
+                            Blow a whistle in 3-blast sequences (international distress signal). Conserve your voice —
+                            shouting wastes energy and can be hard to hear over water.</p>
+                    </div>
+                    <span class="priority-tag tag-info">When Trapped</span>
+                </div>
+
+                <div class="priority-item reveal">
+                    <div class="priority-num">06</div>
+                    <div class="priority-body">
+                        <h3>Do Not Return Until Officially Cleared</h3>
+                        <p>Even after water recedes, floodwater leaves behind hidden dangers: structural weakness,
+                            contamination, downed lines, and unstable ground. Wait for official all-clear from local
+                            authorities before re-entering.</p>
+                    </div>
+                    <span class="priority-tag tag-info">Post-Flood</span>
+                </div>
+            </div>
+
+            <!-- The critical window -->
+            <div class="timer-block reveal">
+                <div class="timer-icon">
+                    90
+                    <small>SECONDS</small>
+                </div>
+                <div class="timer-content">
+                    <h3>The 90-Second Vehicle Rule</h3>
+                    <p>If your car is swept into floodwater, you have approximately <strong>90 seconds</strong> before
+                        the electrical system fails and the windows won't open. Unbuckle immediately. Open or break a
+                        side window — not the door (water pressure makes it impossible). Push out and swim at an angle
+                        to the current toward shore. Do not wait for the car to fill with water before attempting to
+                        exit.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- DECISION TREE -->
+        <section id="decision">
+            <div class="section-label">02 — Situation Assessment</div>
+            <h2 class="section-title reveal">What's Your Situation?</h2>
+            <p class="section-desc reveal reveal-delay-1">Answer the questions below for immediate, situation-specific
+                guidance.</p>
+
+            <div class="decision-wrapper reveal">
+                <!-- Q1 -->
+                <div class="decision-card" id="q1">
+                    <div class="decision-q">
+                        <span class="q-label">Question 01 of 04</span>
+                        Is water currently entering your building?
+                    </div>
+                    <div class="decision-options">
+                        <button class="decision-btn yes" onclick="showQ(2, 'yes', 'q1')">✓ Yes — water is
+                            inside</button>
+                        <button class="decision-btn no" onclick="showQ(2, 'no', 'q1')">✗ No — I'm dry but
+                            nearby</button>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="decision-card" id="q2" style="display:none; margin-top:16px;">
+                    <div class="decision-q" id="q2-text">
+                        <span class="q-label">Question 02 of 04</span>
+                    </div>
+                    <div class="decision-options" id="q2-opts"></div>
+                    <div class="decision-result" id="q2-result"></div>
+                    <button class="decision-reset" onclick="resetDecision()" style="display:none" id="reset-btn">↺ Start
+                        Over</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- SIGNAL FOR RESCUE -->
+        <section>
+            <div class="section-label">03 — If You Are Trapped</div>
+            <h2 class="section-title reveal">Signal for Rescue</h2>
+            <p class="section-desc reveal reveal-delay-1">If you cannot evacuate, make yourself visible and signal your
+                location to rescuers using the methods below.</p>
+
+            <a href="beacon.html" class="reveal"
+                style="display:inline-flex; align-items:center; gap:12px; margin-bottom:8px; background:rgba(232,67,26,0.1); border:1px solid rgba(232,67,26,0.35); border-radius:6px; padding:14px 22px; text-decoration:none; color:var(--white); transition:background 0.2s, border-color 0.2s;"
+                onmouseover="this.style.background='rgba(232,67,26,0.18)'"
+                onmouseout="this.style.background='rgba(232,67,26,0.1)'">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"
+                    style="flex-shrink:0">
+                    <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93" />
+                </svg>
+                <div>
+                    <div
+                        style="font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:0.08em; color:var(--danger);">
+                        LAUNCH FLASHBEACON →</div>
+                    <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Synchronized SOS strobe +
+                        survival whistle — use to signal helicopters &amp; ground rescue</div>
+                </div>
+            </a>
+
+            <div class="signal-grid">
+                <div class="signal-card reveal">
+                    <h4>Light Signal</h4>
+                    <p>Flash a flashlight or phone screen toward the sky in a consistent pattern. At night, this is
+                        visible from rescue helicopters up to a mile away.</p>
+                </div>
+                <div class="signal-card reveal reveal-delay-1">
+                    <h4>Bright Cloth / Flag</h4>
+                    <p>Hang a bright red, orange, or white cloth from your highest window or rooftop. Move it slowly
+                        back and forth to distinguish it from debris.</p>
+                </div>
+                <div class="signal-card reveal reveal-delay-2">
+                    <h4>Whistle — 3 Blasts</h4>
+                    <p>Three short blasts is the universal distress signal. Repeat every few minutes. A whistle carries
+                        much farther than your voice and uses far less energy.</p>
+                </div>
+                <div class="signal-card reveal reveal-delay-3">
+                    <h4>Text Over Call</h4>
+                    <p>During disasters, SMS texts get through when calls can't. Text your location and status to 911
+                        (if available in your area) or to family who can relay to rescuers.</p>
+                </div>
+                <div class="signal-card reveal">
+                    <h4>Stay Visible at Window</h4>
+                    <p>Stay at the highest window and remain visible. Rescue boats and helicopters scan windows. A
+                        waving person is one of the most effective signals.</p>
+                </div>
+                <div class="signal-card reveal reveal-delay-1">
+                    <h4>Know Your Address</h4>
+                    <p>Have your complete street address memorized or written down. When you reach 911, give your full
+                        address first — before anything else.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- CRISIS CHECKLIST -->
+        <section>
+            <div class="section-label">04 — Crisis Checklist</div>
+            <h2 class="section-title reveal">Track Your Actions</h2>
+            <p class="section-desc reveal reveal-delay-1">Tap each item as you complete it. Emergencies are chaotic —
+                this keeps you focused.</p>
+
+            <div class="task-progress-wrap reveal">
+                <div class="task-progress-bar" id="duringProgressBar"></div>
+            </div>
+            <div class="task-progress-label reveal">
+                <span>Actions completed</span>
+                <span id="duringProgressText">0 / 8</span>
+            </div>
+
+            <div class="task-list reveal">
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-check"></div>
+                    <div class="task-body">
+                        <strong>Moved to highest floor or high ground</strong>
+                        <span>All household members are above flood level.</span>
+                    </div>
+                    <span class="task-badge crit">Critical</span>
+                </div>
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-check"></div>
+                    <div class="task-body">
+                        <strong>Called 911 or notified emergency services</strong>
+                        <span>Location reported, rescue request made if needed.</span>
+                    </div>
+                    <span class="task-badge crit">Critical</span>
+                </div>
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-check"></div>
+                    <div class="task-body">
+                        <strong>Turned off main electrical breaker</strong>
+                        <span>Only if safe to do so without entering water.</span>
+                    </div>
+                    <span class="task-badge high">High</span>
+                </div>
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-check"></div>
+                    <div class="task-body">
+                        <strong>Turned off gas at exterior meter</strong>
+                        <span>Used wrench; confirmed no gas smell before staying inside.</span>
+                    </div>
+                    <span class="task-badge high">High</span>
+                </div>
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-check"></div>
+                    <div class="task-body">
+                        <strong>Monitoring NOAA weather radio or local alerts</strong>
+                        <span>Phone, battery radio, or NOAA Weather Radio active.</span>
+                    </div>
+                    <span class="task-badge high">High</span>
+                </div>
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-check"></div>
+                    <div class="task-body">
+                        <strong>Texted family / out-of-area contact with status</strong>
+                        <span>Current location, status, and number of people communicated.</span>
+                    </div>
+                    <span class="task-badge med">Medium</span>
+                </div>
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-check"></div>
+                    <div class="task-body">
+                        <strong>Phone charged / power bank located</strong>
+                        <span>Maximizing battery life. Low-power mode enabled.</span>
+                    </div>
+                    <span class="task-badge med">Medium</span>
+                </div>
+                <div class="task-item" onclick="toggleTask(this)">
+                    <div class="task-check"></div>
+                    <div class="task-body">
+                        <strong>Signal prepared for rescue if trapped</strong>
+                        <span>Bright cloth, flashlight, or whistle ready at window.</span>
+                    </div>
+                    <span class="task-badge med">Medium</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="strip">
+            <div class="strip-text"><strong>Surge</strong> — Data sourced from FEMA, NOAA, and American Red Cross
+                guidelines.</div>
+            <div class="strip-hotline">Emergency: <strong>1-800-621-3362 or 911</strong></div>
+        </footer>
     </div>
-    <div class="strip-hotline">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 12.18 19.79 19.79 0 013.07 3.5 2 2 0 015.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91A16 16 0 0015 15.91l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-      Emergency: <strong>911</strong>
-    </div>
-  </div>
 
-</div><!-- /page -->
+    <button class="sos-btn" onclick="openSOSModal()">SOS</button>
+    <script src="script.js"></script>
+    <script>
+        // Decision tree logic
+        const q2Data = {
+            yes: {
+                text: 'Is the water still rising inside the building?',
+                opts: [
+                    {
+                        label: '✓ Yes — rising fast',
+                        cls: 'no',
+                        result: {
+                            type: 'unsafe',
+                            title: '⚠ Evacuate Upward Immediately',
+                            body: 'Move to the highest floor or attic right now. Bring your phone, a flashlight, and something to signal rescuers (bright cloth or whistle). Do not wait — water can rise several feet in minutes. If you must access the roof, bring something to signal aircraft.'
+                        }
+                    },
+                    {
+                        label: '— No — it has stabilized',
+                        cls: 'yes',
+                        result: {
+                            type: 'warning',
+                            title: 'Stay High & Monitor',
+                            body: 'You are in a holding pattern. Remain on the highest level, do not go downstairs until water has fully receded AND official authorities have cleared your area. Monitor NOAA radio or emergency alerts continuously. Signal for help if needed.'
+                        }
+                    }
+                ]
+            },
+            no: {
+                text: 'Are you able to evacuate safely on foot or by vehicle right now?',
+                opts: [
+                    {
+                        label: '✓ Yes — I have a safe route',
+                        cls: 'yes',
+                        result: {
+                            type: 'safe',
+                            title: 'Evacuate Now — Before Water Rises',
+                            body: 'Leave immediately. Take your emergency kit, medications, and documents. Drive away from the flood — never toward it. Follow official evacuation routes only. Do not drive through any water, even if it looks shallow. Contact family to report your status once safe.'
+                        }
+                    },
+                    {
+                        label: '✗ No — routes are blocked',
+                        cls: 'no',
+                        result: {
+                            type: 'warning',
+                            title: 'Shelter in Place — Go High',
+                            body: 'Do not attempt to cross floodwater on foot. Move to the highest floor of the nearest sturdy building. Call 911 and report your exact location. Signal from windows or rooftop. Conserve your phone battery and stay on the line with emergency services.'
+                        }
+                    }
+                ]
+            }
+        };
 
-<!-- Floating SOS -->
-<button class="sos-btn" onclick="alert('In a real emergency, call 911 immediately.')">SOS</button>
+        function showQ(qNum, answer, fromQ) {
+            const q2 = document.getElementById('q2');
+            const qText = document.getElementById('q2-text');
+            const qOpts = document.getElementById('q2-opts');
+            const qResult = document.getElementById('q2-result');
+            const resetBtn = document.getElementById('reset-btn');
 
-  <script src="script.js"></script>
+            const data = q2Data[answer];
+            qText.innerHTML = `<span class="q-label">Question 02 of 04</span>${data.text}`;
+            qOpts.innerHTML = '';
+            data.opts.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = `decision-btn ${opt.cls}`;
+                btn.textContent = opt.label;
+                btn.onclick = () => showResult(opt.result);
+                qOpts.appendChild(btn);
+            });
+
+            qResult.style.display = 'none';
+            resetBtn.style.display = 'none';
+            q2.style.display = 'block';
+
+            // Disable Q1 buttons
+            document.querySelectorAll('#q1 .decision-btn').forEach(b => b.style.opacity = '0.4');
+        }
+
+        function showResult(result) {
+            const qResult = document.getElementById('q2-result');
+            const resetBtn = document.getElementById('reset-btn');
+            const qOpts = document.getElementById('q2-opts');
+            qResult.className = `decision-result ${result.type}`;
+            qResult.innerHTML = `<strong>${result.title}</strong>${result.body}`;
+            qResult.style.display = 'block';
+            resetBtn.style.display = 'inline-block';
+            qOpts.querySelectorAll('button').forEach(b => b.style.opacity = '0.4');
+        }
+
+        function resetDecision() {
+            document.getElementById('q2').style.display = 'none';
+            document.querySelectorAll('#q1 .decision-btn').forEach(b => b.style.opacity = '1');
+        }
+
+        // Task checklist
+        function toggleTask(el) {
+            el.classList.toggle('done');
+            updateDuringProgress();
+        }
+
+        function updateDuringProgress() {
+            const all = document.querySelectorAll('.task-item');
+            const done = document.querySelectorAll('.task-item.done').length;
+            const pct = (done / all.length) * 100;
+            document.getElementById('duringProgressBar').style.width = pct + '%';
+            document.getElementById('duringProgressText').textContent = `${done} / ${all.length}`;
+        }
+    </script>
 </body>
+
 </html>

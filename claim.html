@@ -155,6 +155,13 @@
                         <button class="btn-primary" style="flex: 2;" id="downloadReport">EXPORT EVIDENCE LOG (PDF)</button>
                         <button class="btn-ghost" style="flex: 1;" onclick="window.location.reload()">RESET</button>
                     </div>
+
+                    <div class="report-history" style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                        <div class="panel-header" style="font-size: 0.9rem; margin-bottom: 15px;">ARCHIVED SESSIONS</div>
+                        <div id="archivesList" style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 0.7rem; color: var(--muted); text-align: center;">No archived sessions found.</div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Hidden Report Container for PDF Rendering -->
