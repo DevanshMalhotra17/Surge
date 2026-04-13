@@ -3,6 +3,13 @@
    ══════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Register Service Worker for Offline PWA Support
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Surge Offline Mode: Active"))
+            .catch(err => console.log("PWA Registration Failed:", err));
+    }
+
     initCursor();
     initScrollInteractions();
     initMobileMenu();

@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initBeacon() {
     const sosToggle = document.getElementById('sosToggle');
-    const strobeToggle = document.getElementById('strobeOnly');
-    const audioToggle = document.getElementById('audioOnly');
     const strobeOverlay = document.getElementById('strobeOverlay');
     const stopStrobeBtn = document.getElementById('stopStrobeBtn');
     const beaconStatus = document.getElementById('beaconStatus');
@@ -19,15 +17,31 @@ function initBeacon() {
     let sosPulseTimeout = null;
     
     let isSOSActive = false;
-    let isStrobeOnly = false;
-    let isAudioOnly = false;
 
-    function addLog(msg) {
+    // Load logs from storage
+    const savedLogs = JSON.parse(localStorage.getItem('surge_beacon_logs')) || [];
+    savedLogs.slice().reverse().forEach(log => {
         const entry = document.createElement('div');
         entry.className = 'log-entry';
+        entry.innerHTML = log;
+        logPanel.appendChild(entry);
+    });
+
+    function addLog(msg) {
         const time = new Date().toTimeString().split(' ')[0];
-        entry.innerHTML = `<span style="color:var(--foam)">[${time}]</span> ${msg}`;
+        const logHtml = `<span style="color:var(--foam)">[${time}]</span> ${msg}`;
+        
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = logHtml;
         logPanel.prepend(entry);
+
+        // Persist Logs
+        const logs = JSON.parse(localStorage.getItem('surge_beacon_logs')) || [];
+        logs.push(logHtml);
+        if (logs.length > 20) logs.shift();
+        localStorage.setItem('surge_beacon_logs', JSON.stringify(logs));
+
         if (logPanel.children.length > 8) logPanel.lastChild.remove();
     }
 
@@ -118,12 +132,8 @@ function initBeacon() {
 
     function stopAll() {
         isSOSActive = false;
-        isStrobeOnly = false;
-        isAudioOnly = false;
         
         sosToggle.classList.remove('active');
-        strobeToggle.classList.remove('active');
-        audioToggle.classList.remove('active');
         
         stopWhistle();
         stopStrobe();
@@ -153,36 +163,6 @@ function initBeacon() {
             beaconStatus.style.color = "var(--danger)";
             addLog("SOS signal started. Keep screen visible to the sky.");
             pulseSOS();
-        }
-    });
-
-    strobeToggle.addEventListener('click', () => {
-        if (isStrobeOnly) {
-            stopAll();
-            addLog("Visual signal stopped.");
-        } else {
-            stopAll();
-            isStrobeOnly = true;
-            strobeToggle.classList.add('active');
-            beaconStatus.textContent = "RED / WHITE STROBE";
-            beaconStatus.style.color = "var(--foam)";
-            addLog("Visual rescue signal active (Dual Phase).");
-            startStrobe('dual');
-        }
-    });
-
-    audioToggle.addEventListener('click', () => {
-        if (isAudioOnly) {
-            stopAll();
-            addLog("Audio signal stopped.");
-        } else {
-            stopAll();
-            isAudioOnly = true;
-            audioToggle.classList.add('active');
-            beaconStatus.textContent = "RESCUE WHISTLE ACTIVE";
-            beaconStatus.style.color = "var(--foam)";
-            addLog("High-pitch survival whistle active.");
-            startWhistle();
         }
     });
 }

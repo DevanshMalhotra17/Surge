@@ -19,12 +19,29 @@ function initVault() {
         { id: 4, name: "First Aid Trauma Kit", exp: "2025-05-20" }
     ];
 
-    function addLog(msg) {
+    // Load logs from storage
+    const savedLogs = JSON.parse(localStorage.getItem('surge_vault_logs')) || [];
+    savedLogs.slice().reverse().forEach(log => {
         const entry = document.createElement('div');
         entry.className = 'log-entry';
+        entry.innerHTML = log;
+        logPanel.appendChild(entry);
+    });
+
+    function addLog(msg) {
         const time = new Date().toTimeString().split(' ')[0];
-        entry.innerHTML = `<span style="color:var(--foam)">[${time}]</span> ${msg}`;
+        const logHtml = `<span style="color:var(--foam)">[${time}]</span> ${msg}`;
+        
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = logHtml;
         logPanel.prepend(entry);
+
+        // Persist Logs
+        const logs = JSON.parse(localStorage.getItem('surge_vault_logs')) || [];
+        logs.push(logHtml);
+        if (logs.length > 20) logs.shift();
+        localStorage.setItem('surge_vault_logs', JSON.stringify(logs));
     }
 
     function calculateReadiness() {

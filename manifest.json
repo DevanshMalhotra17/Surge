@@ -1,0 +1,17 @@
+{
+  "name": "Surge: Flood Command Center",
+  "short_name": "Surge",
+  "description": "Professional forensic flood documentation and emergency response suite.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#020c1b",
+  "theme_color": "#5eb8ff",
+  "icons": [
+    {
+      "src": "assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

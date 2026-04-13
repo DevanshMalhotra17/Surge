@@ -17,8 +17,17 @@ function initClaimSync() {
     const captureBtn = document.getElementById('captureBtn');
 
     let currentCoords = "LAT: --, LON: --";
-    let auditData = []; // Array to hold multiple snapshots
+    let auditData = JSON.parse(localStorage.getItem('surge_claim_evidence')) || []; 
     let videoEl = null;
+
+    // Load logs from storage
+    const savedLogs = JSON.parse(localStorage.getItem('surge_claim_logs')) || [];
+    savedLogs.slice().reverse().forEach(log => {
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = log;
+        logPanel.appendChild(entry);
+    });
 
     // --- GPS Logic (Single Watcher) ---
     if (navigator.geolocation) {
@@ -34,11 +43,21 @@ function initClaimSync() {
     }
 
     function addLog(msg) {
+        const time = new Date().toTimeString().split(' ')[0];
+        const logHtml = `<span style="color:var(--foam)">[${time}]</span> ${msg}`;
+        
         const entry = document.createElement('div');
         entry.className = 'log-entry';
-        const time = new Date().toTimeString().split(' ')[0];
-        entry.innerHTML = `<span style="color:var(--foam)">[${time}]</span> ${msg}`;
+        entry.innerHTML = logHtml;
         logPanel.prepend(entry);
+        
+        // Persist Logs
+        const logs = JSON.parse(localStorage.getItem('surge_claim_logs')) || [];
+        logs.push(logHtml);
+        if (logs.length > 20) logs.shift();
+        localStorage.setItem('surge_claim_logs', JSON.stringify(logs));
+        
+        if (logPanel.children.length > 8) logPanel.lastChild.remove();
     }
 
     function generateHash() {
@@ -112,11 +131,14 @@ function initClaimSync() {
         vHash.textContent = `SECURE ID: ${secureID}`;
         
         renderGallery();
+        localStorage.setItem('surge_claim_evidence', JSON.stringify(auditData));
         addLog(`Forensic evidence captured for ${room}.`);
     }
 
     function renderGallery() {
         evidenceGallery.innerHTML = '';
+        if (auditData.length > 0) assessmentPanel.style.display = 'block';
+        
         auditData.forEach((item, idx) => {
             const div = document.createElement('div');
             div.className = 'prev-box evidence-item';
@@ -127,6 +149,8 @@ function initClaimSync() {
             evidenceGallery.appendChild(div);
         });
     }
+
+    renderGallery(); // Initial render on load
 
     captureBtn.addEventListener('click', takeSnapshot);
 
