@@ -248,24 +248,46 @@ function initHighGround() {
                 <div class="path-step">Hold at Safe Zone Coordinate. Await rescue.</div>
             `;
 
-            // Cache data for offline export
-            window.cachedExportData = `SURGE COMMAND CENTER - HIGHGROUND MODULE
------------------------------------------
-EVACUATION ROUTE PROTOCOL
-Status: VERIFIED
+            // Cache data for PDF export
+            window.cachedExportData = `
+                <div style="font-family: 'Inter', Helvetica, Arial, sans-serif; padding: 40px; color: #111; background: #fff; max-width: 800px; margin: 0 auto;">
+                    <div style="border-bottom: 3px solid #e8431a; padding-bottom: 16px; margin-bottom: 32px;">
+                        <h1 style="color: #0d2240; font-size: 28px; margin: 0;">Surge Evacuation Route</h1>
+                        <p style="color: #666; margin: 8px 0 0 0; font-size: 14px;">HighGround Topographical Protocol — Keep securely with emergency supplies.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="color: #e8431a; font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">1. Threat Node (Start Location)</h3>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Location Query:</strong> ${locName}</p>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Coordinates:</strong> ${startLat.toFixed(4)}, ${startLon.toFixed(4)}</p>
+                    </div>
 
-START LOCATION: ${locName} (${startLat.toFixed(4)}, ${startLon.toFixed(4)})
-SAFE ZONE: Elevated Topo-Node (${endLat.toFixed(4)}, ${endLon.toFixed(4)})
-
-DISTANCE: ${fakeDist} km
-ELEVATION GAIN: +${fakeElev} m
-
-ACTIONS:
-1. Head toward Topographic Marker Alpha
-2. Ascend along ridge trajectory
-3. Hold at Safe Zone Coordinate. Await rescue.
-
-[End of Transmission]`;
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="color: #2ecc71; font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">2. Safe Zone (Evacuation Target)</h3>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Target Topography:</strong> Elevated Topo-Node</p>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Target Coordinates:</strong> ${endLat.toFixed(4)}, ${endLon.toFixed(4)}</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="color: #1a6fbf; font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">3. Route Parameters</h3>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Total Distance:</strong> ${fakeDist} km</p>
+                        <p style="margin: 6px 0; font-size: 15px;"><strong>Total Elevation Gain:</strong> +${fakeElev} m</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="color: #0d2240; font-size: 18px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">4. Authorized Actions</h3>
+                        <ul style="font-size: 15px; margin: 0; padding-left: 20px;">
+                            <li style="margin-bottom: 8px;">Head toward Topographic Marker Alpha</li>
+                            <li style="margin-bottom: 8px;">Ascend along ridge trajectory</li>
+                            <li style="margin-bottom: 8px;">Hold at Safe Zone Coordinate. Await rescue.</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-top: 60px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 16px; text-align: center;">
+                        Generated securely via Surge Command Center | National Emergency Hotline: 1-800-621-3362
+                    </div>
+                </div>
+            `;
 
             pathOverlay.style.display = "block";
             sysStatus.textContent = "ROUTE PREPARED";
@@ -278,33 +300,51 @@ ACTIONS:
 window.downloadRoute = function() {
     if (!window.cachedExportData) return;
     
-    // Fallback to Data URI to prevent any CORS or Blob issues on Local Files
-    const dataUri = "data:text/plain;charset=utf-8," + encodeURIComponent(window.cachedExportData);
-    
-    // Create invisible anchor
-    const a = document.createElement("a");
-    a.href = dataUri;
-    a.download = "Surge_Evacuation_Route.txt";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.textContent = "✓ EXPORTED";
-        exportBtn.style.background = "#1a6fbf";
-        setTimeout(() => {
-            exportBtn.textContent = "EXPORT TO DEVICE";
-            exportBtn.style.background = "";
-        }, 3000);
-    }
-    
+    const btn = document.getElementById('exportBtn');
     const logPanel = document.getElementById('logPanel');
-    if (logPanel) {
-        const entry = document.createElement('div');
-        entry.className = 'log-entry';
-        const time = new Date().toTimeString().split(' ')[0];
-        entry.innerHTML = `<span style="color:var(--foam)">[${time}]</span> Evacuation route downloaded to local device.`;
-        logPanel.prepend(entry);
+    
+    if (btn) {
+        btn.textContent = 'Generating PDF...';
+        btn.style.opacity = '0.7';
+        btn.style.pointerEvents = 'none';
     }
+
+    const opt = {
+        margin: 0.5,
+        filename: 'Surge_Evacuation_Route.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, scrollY: 0 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(window.cachedExportData).save().then(() => {
+        if (btn) {
+            btn.textContent = '✓ ROUTE EXPORTED';
+            btn.style.background = '#1a6fbf';
+            btn.style.opacity = '1';
+            setTimeout(() => {
+                btn.textContent = 'EXPORT TO DEVICE';
+                btn.style.background = '';
+                btn.style.pointerEvents = 'auto';
+            }, 3000);
+        }
+        
+        if (logPanel) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toTimeString().split(' ')[0];
+            entry.innerHTML = `<span style="color:var(--foam)">[${time}]</span> Evacuation PDF route downloaded to local hardware.`;
+            logPanel.prepend(entry);
+        }
+    }).catch(err => {
+        console.error("PDF generation error: ", err);
+        if (btn) {
+            btn.textContent = 'ERROR GENERATING EXPORT';
+            btn.style.opacity = '1';
+            setTimeout(() => {
+                btn.textContent = 'EXPORT TO DEVICE';
+                btn.style.pointerEvents = 'auto';
+            }, 3000);
+        }
+    });
 };

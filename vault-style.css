@@ -1,0 +1,143 @@
+.vault-main {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.vault-container {
+    max-width: 600px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.vault-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin-bottom: 4px;
+}
+
+.vault-header p {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.supply-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.supply-item {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s;
+}
+
+.supply-item:hover {
+    border-color: var(--foam);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item-name {
+    font-weight: 500;
+    color: var(--white);
+    font-size: 1rem;
+}
+
+.item-date {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+.item-status {
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.status-ok {
+    color: #2ecc71;
+    background: rgba(46, 204, 113, 0.1);
+}
+
+.status-expiring {
+    color: var(--warning);
+    background: rgba(245, 166, 35, 0.1);
+}
+
+.status-expired {
+    color: var(--danger);
+    background: rgba(232, 67, 26, 0.1);
+}
+
+.vault-actions {
+    margin-top: 20px;
+}
+
+/* Modal styling refinement */
+.form-group {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--foam);
+    margin-bottom: 8px;
+    font-family: 'Courier Prime', monospace;
+}
+
+.form-group input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 12px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.delete-btn {
+    opacity: 0;
+    cursor: pointer;
+    color: var(--danger);
+    padding: 5px;
+    transition: opacity 0.3s;
+}
+
+.supply-item:hover .delete-btn {
+    opacity: 0.6;
+}
+
+.delete-btn:hover {
+    opacity: 1 !important;
+}

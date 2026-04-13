@@ -1,0 +1,130 @@
+.life-main {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comm-terminal {
+    width: 100%;
+    max-width: 600px;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+
+.terminal-screen {
+    height: 350px;
+    padding: 20px;
+    overflow-y: auto;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: radial-gradient(circle at center, #0a111a 0%, #000 100%);
+}
+
+.msg-system {
+    color: var(--foam);
+    opacity: 0.7;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.msg-user {
+    align-self: flex-end;
+    background: rgba(94, 184, 255, 0.1);
+    border: 1px solid var(--foam);
+    padding: 10px 16px;
+    border-radius: 8px 8px 0 8px;
+    max-width: 80%;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+.msg-status {
+    font-size: 0.6rem;
+    color: var(--warning);
+    margin-top: 4px;
+    text-align: right;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.terminal-quick-keys {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.1);
+}
+
+.key-btn {
+    background: #0d1117;
+    border: none;
+    color: var(--foam);
+    padding: 15px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.key-btn:hover {
+    background: #161b22;
+    color: var(--white);
+}
+
+.terminal-input-area {
+    display: flex;
+    padding: 15px;
+    gap: 12px;
+    background: #0d1117;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.terminal-input-area input {
+    flex: 1;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 12px;
+    color: var(--white);
+    font-family: 'Courier Prime', monospace;
+}
+
+#sendBtn {
+    background: var(--foam);
+    color: #000;
+    border: none;
+    padding: 0 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sendBtn:hover {
+    background: var(--white);
+}
+
+/* Custom Scrollbar for Terminal */
+.terminal-screen::-webkit-scrollbar {
+    width: 6px;
+}
+.terminal-screen::-webkit-scrollbar-track {
+    background: transparent;
+}
+.terminal-screen::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}

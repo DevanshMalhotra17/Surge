@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Surge | The Vault - Supply Tracker</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Courier+Prime:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="radar-style.css" />
+    <link rel="stylesheet" href="vault-style.css" />
+    <link rel="icon" type="image/png" href="assets/logo.png">
+</head>
+
+<body>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <div class="bg-water">
+        <div class="particles" id="particles"></div>
+    </div>
+    <div class="grain"></div>
+
+    <div class="page">
+        <nav>
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="assets/logo.png" alt="Surge Logo" />
+                    Surge
+                </a>
+            </div>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+            <div class="nav-tabs" id="navTabs">
+                <a href="index.html" class="nav-tab">Home</a>
+                <a href="before.html" class="nav-tab">Before</a>
+                <a href="during.html" class="nav-tab">During</a>
+                <a href="after.html" class="nav-tab">After</a>
+                <a href="detect.html" class="nav-tab active">Command Center</a>
+            </div>
+        </nav>
+
+        <div class="radar-app-layout">
+            <aside class="radar-sidebar">
+                <a href="detect.html" class="back-link-inline">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Return to Hub
+                </a>
+
+                <div class="search-console">
+                    <div class="section-label">Digital Go-Bag</div>
+                    <h2 style="font-family:'Bebas Neue'; letter-spacing: 0.05em; font-size: 2rem; margin-bottom: 20px;">
+                        THE VAULT</h2>
+
+                    <div class="data-card tiny" style="margin-bottom: 12px; border-color: rgba(94, 184, 255, 0.3);">
+                        <div class="data-label">ENCRYPTION</div>
+                        <div class="data-value">LOCAL_STORAGE_ONY</div>
+                    </div>
+                    
+                    <p style="font-size: 0.75rem; color: var(--sky); line-height: 1.5; margin-bottom: 20px;">
+                        Securely track your emergency supplies. Your data never leaves this device. Monitor expiration dates so you're never caught off guard.
+                    </p>
+                </div>
+
+                <div class="active-readouts">
+                    <div class="data-card tiny">
+                        <div class="data-label">Readiness Score</div>
+                        <div class="data-value" id="readinessScore">0%</div>
+                    </div>
+                    <div class="data-card log-panel" id="logPanel">
+                        <div class="log-entry"><span style="color:var(--foam)">[Vault]</span> Supply manifest loaded.</div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="radar-main vault-main">
+                <div class="vault-container">
+                    <div class="vault-header">
+                        <h3>EMERGENCY MANIFEST</h3>
+                        <p>Items marked with ⚠️ need attention.</p>
+                    </div>
+
+                    <div class="supply-list" id="supplyList">
+                        <!-- Items injected by JS -->
+                    </div>
+
+                    <div class="vault-actions">
+                        <button class="btn-primary" id="addItemBtn">+ ADD NEW ITEM</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Simple Add Item Modal -->
+    <div class="custom-modal" id="itemModal" style="display: none;">
+        <div class="modal-content">
+            <h3>LOG NEW SUPPLY</h3>
+            <div class="form-group">
+                <label>ITEM NAME</label>
+                <input type="text" id="itemName" placeholder="e.g. Canned Water, Batteries">
+            </div>
+            <div class="form-group">
+                <label>EXPIRATION DATE</label>
+                <input type="date" id="itemExp">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-cancel" id="closeModal">CANCEL</button>
+                <button class="btn-primary" id="saveItem">SAVE TO VAULT</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="vault.js"></script>
+
+</body>
+
+</html>

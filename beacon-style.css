@@ -1,0 +1,210 @@
+.beacon-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.beacon-controls {
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.beacon-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.beacon-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(94, 184, 255, 0.2);
+    transform: translateY(-4px);
+}
+
+.main-trigger {
+    padding: 50px 30px;
+    border-width: 2px;
+    background: radial-gradient(circle at center, rgba(232, 67, 26, 0.05) 0%, transparent 100%);
+}
+
+.main-trigger.active {
+    border-color: var(--danger);
+    background: rgba(232, 67, 26, 0.15);
+    box-shadow: 0 0 50px rgba(232, 67, 26, 0.2);
+}
+
+.beacon-icon-glow {
+    width: 80px;
+    height: 80px;
+    background: rgba(232, 67, 26, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    color: var(--danger);
+    transition: all 0.3s;
+}
+
+.main-trigger.active .beacon-icon-glow {
+    background: var(--danger);
+    color: var(--white);
+    box-shadow: 0 0 30px var(--danger);
+    animation: beaconPulse 1s infinite;
+}
+
+@keyframes beaconPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.main-trigger h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.main-trigger p {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.toggle-track {
+    width: 60px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin: 0 auto;
+    position: relative;
+    transition: background 0.3s;
+}
+
+.main-trigger.active .toggle-track {
+    background: var(--danger);
+}
+
+.toggle-knob {
+    width: 22px;
+    height: 22px;
+    background: var(--white);
+    border-radius: 50%;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.main-trigger.active .toggle-knob {
+    transform: translateX(30px);
+}
+
+.control-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.sub-trigger {
+    padding: 24px;
+}
+
+.sub-trigger.active {
+    border-color: var(--foam);
+    background: rgba(94, 184, 255, 0.1);
+}
+
+.sub-icon {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+}
+
+.sub-trigger h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+
+.sub-trigger p {
+    font-size: 0.7rem;
+    color: var(--muted);
+}
+
+.warning-box {
+    background: rgba(245, 166, 35, 0.05);
+    border: 1px solid rgba(245, 166, 35, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: var(--warning);
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.warning-box svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.strobe-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none; /* Hidden by default */
+    background: #fff;
+    cursor: default;
+    pointer-events: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.strobe-overlay.active {
+    display: flex; /* Shown only when active */
+}
+
+.stop-strobe-btn {
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid #fff;
+    color: #fff;
+    padding: 20px 40px;
+    border-radius: 50px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    z-index: 10001;
+    transition: transform 0.2s;
+}
+
+.stop-strobe-btn:hover {
+    transform: scale(1.05);
+    background: #000;
+}
+
+.strobe-overlay.flash-red {
+    background: #ff0000;
+}
+
+.strobe-overlay.flash-white {
+    background: #ffffff;
+}
