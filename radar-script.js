@@ -295,18 +295,7 @@ function initIntelApp() {
             console.log("Running locally via file://. Bypassing env.txt fetch to keep console clean.");
         }
 
-        // Extremely robust fallback for static sites
-        // Direct authentication via local storage (prevents GH Push Protection errors)
         groqApiKey = localStorage.getItem('GROQ_API_KEY') || '';
-        
-        if (!groqApiKey) {
-            // If missing, we revert to the prompt to keep the key out of the source code
-            const manualKey = prompt("SECURITY ALERT: GitHub Push Protection active.\n\nPlease paste your Groq API Key here. It will be saved locally in your browser only, NOT in the code:");
-            if (manualKey) {
-                groqApiKey = manualKey.trim();
-                localStorage.setItem('GROQ_API_KEY', groqApiKey);
-            }
-        }
 
         if (groqApiKey) {
             aiTypewriterUpdate("Establishing secure link to Grok Neural Network...\nAnalyzing local telemetry...");

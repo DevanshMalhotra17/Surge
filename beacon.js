@@ -151,7 +151,15 @@ function initBeacon() {
     });
 
     // --- Event Listeners ---
-    sosToggle.addEventListener('click', () => {
+    sosToggle.addEventListener('click', async () => {
+        // 1. Force initialize/resume AudioContext on first user interaction (critical for Vercel/Chrome)
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            await audioCtx.resume();
+        }
+
         if (isSOSActive) {
             stopAll();
             addLog("SOS Signal Deactivated.");

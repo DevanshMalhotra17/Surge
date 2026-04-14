@@ -140,6 +140,7 @@ function initClaimSync() {
     function renderGallery() {
         evidenceGallery.innerHTML = '';
         if (auditData.length > 0) assessmentPanel.style.display = 'block';
+        else assessmentPanel.style.display = 'none';
         
         auditData.forEach((item, idx) => {
             const div = document.createElement('div');
@@ -268,4 +269,14 @@ function initClaimSync() {
                 addLog("Camera access restricted.");
             });
     }
+    // --- Reset Logic ---
+    window.resetSession = function() {
+        if (confirm("Permanently delete current evidence session? (Archived sessions will be saved)")) {
+            localStorage.removeItem('surge_claim_evidence');
+            auditData = [];
+            renderGallery();
+            assessmentPanel.style.display = 'none';
+            addLog("Current evidence session cleared.");
+        }
+    };
 }
