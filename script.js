@@ -3,11 +3,13 @@
    ══════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Register Service Worker for Offline PWA Support
-    if ('serviceWorker' in navigator) {
+    // Register Service Worker for Offline PWA Support (Only on HTTPS/Localhost)
+    if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
         navigator.serviceWorker.register('sw.js')
             .then(() => console.log("Surge Offline Mode: Active"))
             .catch(err => console.log("PWA Registration Failed:", err));
+    } else if (window.location.protocol === 'file:') {
+        console.log("Surge: Running in Local File Mode. PWA/Offline features standby until deployment.");
     }
 
     initCursor();

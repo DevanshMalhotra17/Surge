@@ -24,8 +24,19 @@ function initHighGround() {
         if (logPanel.children.length > 8) logPanel.lastChild.remove();
     }
 
+    // --- Map Hardware Check ---
+    if (typeof L === 'undefined') {
+        addLog("CRITICAL: Map library (Leaflet) failed to load. Are you offline?");
+        sysStatus.textContent = "MAP ERROR";
+        sysStatus.style.color = "var(--danger)";
+        return;
+    }
+
     // Initialize Map
-    const map = L.map('map', {zoomControl: false}).setView([30, 0], 2);
+    const map = L.map('map', { 
+        zoomControl: false, 
+        attributionControl: false 
+    }).setView([39.8283, -98.5795], 4); // Default to US Center
     L.control.zoom({position: 'bottomright'}).addTo(map);
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {

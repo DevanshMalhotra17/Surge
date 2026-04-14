@@ -296,14 +296,15 @@ function initIntelApp() {
         }
 
         // Extremely robust fallback for static sites
+        // Direct authentication via local storage (prevents GH Push Protection errors)
+        groqApiKey = localStorage.getItem('GROQ_API_KEY') || '';
+        
         if (!groqApiKey) {
-            groqApiKey = localStorage.getItem('GROQ_API_KEY') || '';
-            if (!groqApiKey) {
-                const manualKey = prompt("Local system detected.\n\nPlease paste your Groq API Key so the scanner can connect to Llama 3 (or hit Cancel to use the offline heuristic AI):");
-                if (manualKey && manualKey.trim() !== "") {
-                    groqApiKey = manualKey.trim();
-                    localStorage.setItem('GROQ_API_KEY', groqApiKey);
-                }
+            // If missing, we revert to the prompt to keep the key out of the source code
+            const manualKey = prompt("SECURITY ALERT: GitHub Push Protection active.\n\nPlease paste your Groq API Key here. It will be saved locally in your browser only, NOT in the code:");
+            if (manualKey) {
+                groqApiKey = manualKey.trim();
+                localStorage.setItem('GROQ_API_KEY', groqApiKey);
             }
         }
 
